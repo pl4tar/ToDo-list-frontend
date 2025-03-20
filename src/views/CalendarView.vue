@@ -4,8 +4,6 @@
     type="week"
     hide-week-number
     :events="events"
-    @click:date="onDateClick"
-    @click:event="onEventClick"
   />
 </template>
 
@@ -33,12 +31,4 @@ const events = ref([
     color: 'orange',
   },
 ]);
-
-function onDateClick({ date }) {
-  console.log('Выбрана дата:', date);
-}
-
-function onEventClick(eventObject) {
-  console.log('Выбрано событие:', eventObject?.event?.title, eventObject);
-}
 </script>

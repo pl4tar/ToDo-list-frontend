@@ -28,7 +28,7 @@
             </template>
           </v-tooltip>
         </div>
-        <v-sheet class="px-3 py-2 elevation-5 rounded-lg bg-background-light">
+        <v-sheet class="px-3 pb-1 elevation-5 rounded-lg bg-background-light">
           <v-card
             class="d-flex align-center justify-space-between elevation-0 bg-background-light"
           >
@@ -53,16 +53,13 @@
           </v-card>
         </v-sheet>
       </div>
-      <v-sheet class="pa-2 elevation-5 rounded-lg bg-background-light mb-4">
-        <v-list
-          class="d-flex flex-column ga-2"
-        >
+      <v-sheet class="elevation-5 rounded-lg bg-background-light">
+        <v-list class="d-flex flex-column ga-2">
           <v-list>
-            <v-list-item class="mb-2">
+            <v-list-item >
               <template v-slot:prepend>
                 <v-icon
                   icon="mdi-view-grid-plus"
-                  class="elevation-10 pa-5 rounded-lg"
                   size="large"
                   color="primary"
                 />
@@ -75,12 +72,13 @@
               v-for="category in MenuStore.categories"
               :key="category.id"
               :value="category.value"
-              class="mb-2 pl-70"
+              class="mb-1 pl-70"
+              @click="router.push(category.path)"
             >
               <template v-slot:prepend>
                 <v-icon
                   :icon="category.icon"
-                  class="elevation-10 pa-5 rounded-lg"
+                  class="elevation-10 pa-3 rounded-lg"
                   size="large"
                   :color="category.iconColor || 'primary'"
                 />
@@ -99,11 +97,12 @@
             <template v-slot:prepend>
               <v-icon
                 color="primary"
-                :icon="menuItem.icon" />
+                :icon="menuItem.icon" 
+              />
             </template>
-            <v-list-item-title class="font-weight-bold">{{
-              menuItem.name
-            }}</v-list-item-title>
+            <v-list-item-title class="font-weight-bold">
+              {{ menuItem.name }}
+            </v-list-item-title>
           </v-list-item>
         </v-list>
       </v-sheet>

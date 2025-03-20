@@ -2,16 +2,15 @@
   <v-icon
     v-if="!isNavShown"
     size="x-large"
-    class="cursor-pointer pa-8"
+    class="cursor-pointer pt-10 pl-10"
     color="grey"
     icon="mdi-view-headline"
     aria-label="Открыть меню"
     @click="isNavShown = true"
   />
-
   <v-layout>
     <AppNavigation />
-    <v-main>
+    <v-main class="pt-10">
       <v-container>
         <RouterView />
       </v-container>

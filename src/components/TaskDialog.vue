@@ -79,7 +79,7 @@
         </v-chip-group>
       </div>
       <v-sheet class="mx-6 pa-4 mb-5 bg-background-dark rounded-lg elevation-5 text-center">
-        <p class="text-primary font-weight-bold mb-3">Укажите дедлайн</p>
+        <p class="text-primary font-weight-bold mb-3">Добавить дедлайн</p>
         <div class="d-flex flex-column align-center justify-center">
           <div class="d-flex flex-column flex-md-row justify-center ga-3 mb-3">
             <v-btn
@@ -108,7 +108,7 @@
             >
               {{ formatDate(TaskStore.startDate) }}
             </v-chip>
-            <span>-</span>
+            <span v-if="TaskStore.startDate && TaskStore.endDate">-</span>
             <v-chip
               v-if="TaskStore.endDate"
               class="elevation-4 bg-yellow"
@@ -150,10 +150,12 @@ import { computed, ref } from 'vue';
 import { useMenuStore } from '@/stores/MenuStore';
 import { useTaskStore } from '@/stores/TaskStore';
 import DatePicker from '@/components/DatePicker.vue';
-
+import { useFormatDate } from '@/composables/useFormatDate'; 
+ 
 const MenuStore = useMenuStore();
 
 const TaskStore = useTaskStore();
+const { formatDate } = useFormatDate();
 
 const filteredCategories = computed(() =>
   MenuStore.categories.filter(
@@ -195,16 +197,6 @@ const handleDateSave = (date) => {
   TaskStore.isDialogDateOpen = false;
   TaskStore.currentDate = null;
 };
-
-function formatDate(date) {
-  if (date) {
-    return date.toLocaleDateString('ru-RU', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
-  }
-}
 </script>
 
 <style lang="scss" scoped>
