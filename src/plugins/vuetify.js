@@ -1,18 +1,18 @@
-import { createVuetify } from 'vuetify';
-import '@mdi/font/css/materialdesignicons.css';
-import 'vuetify/styles';
-import '@mdi/font/css/materialdesignicons.css';
-import * as components from 'vuetify/components';
-import * as directives from 'vuetify/directives';
-import { VCalendar } from 'vuetify/labs/VCalendar';
+import { createVuetify } from "vuetify";
+import "@mdi/font/css/materialdesignicons.css";
+import "vuetify/styles";
+import "@mdi/font/css/materialdesignicons.css";
+import * as components from "vuetify/components";
+import * as directives from "vuetify/directives";
+import { VCalendar } from "vuetify/labs/VCalendar";
 
 const darkTheme = {
   colors: {
-    primary: '#6c80e7',
-    background: '#6b6b6b',
-    'background-light': '#464646',
-    'background-dark': '#393939',
-    warning: '#FB8C00',
+    primary: "#6c80e7",
+    background: "#6b6b6b",
+    "background-light": "#464646",
+    "background-dark": "#393939",
+    warning: "#FB8C00",
   },
 };
 
@@ -34,18 +34,18 @@ const vuetify = createVuetify({
   },
   directives,
   icons: {
-    defaultSet: 'mdi',
+    defaultSet: "mdi",
   },
   theme: {
     themes: {
       darkTheme,
       lightTheme,
     },
-    defaultTheme: 'darkTheme',
+    defaultTheme: "darkTheme",
   },
   defaults: {
     VContainer: {
-      style: [{ maxWidth: '1400px' }],
+      style: [{ maxWidth: "1400px" }],
     },
   },
 });

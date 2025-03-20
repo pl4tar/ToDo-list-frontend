@@ -14,15 +14,9 @@
         Новая задача
       </v-btn>
     </template>
-    <v-card
-      class="pa-3 pb-10 addDialog"
-      color="background-dark"
-    >
+    <v-card class="pa-3 pb-10 addDialog" color="background-dark">
       <div class="d-flex align-center justify-center">
-        <v-icon
-          color="primary"
-          class="mr-1"
-          icon="mdi-pencil-plus" />
+        <v-icon color="primary" class="mr-1" icon="mdi-pencil-plus" />
         <span class="text-h5 text-primary font-weight-bols">Новая задача</span>
       </div>
       <v-text-field
@@ -33,16 +27,10 @@
         v-model="titleTask"
       >
         <template v-slot:prepend>
-          <v-icon
-            icon="mdi-plus"
-            color="primary" />
+          <v-icon icon="mdi-plus" color="primary" />
         </template>
       </v-text-field>
-      <v-textarea
-        label="Описание"
-        clearable 
-        v-model="descriptionTask" 
-      />
+      <v-textarea label="Описание" clearable v-model="descriptionTask" />
       <v-switch
         inset
         class="d-flex mb-2 align-center justify-center"
@@ -64,7 +52,7 @@
         :items="filteredCategories"
         v-model="selectedCategory"
       />
-      <div class="d-flex flex-column ga-1 mb-10 align-center">
+      <div class="d-flex flex-column ga-1 mb-5 align-center">
         <p class="text-primary font-weight-bold">Укажите приоритет</p>
         <v-chip-group
           filter
@@ -80,118 +68,130 @@
           />
         </v-chip-group>
       </div>
-      <v-row
-        class="d-flex flex-column align-center mb-5"
-        justify="center">
-        <p class="text-primary font-weight-bold mb-2">Укажите дедлайн</p>
-        <div class="d-flex ga-4">
-          <v-btn
-            class="align-self-center rounded-xl w-50"
-            color="green"
-            prepend-icon="mdi-calendar"
-            text="Начало"
-            @click="TaskStore.openDialogDate('start')"
-          />
-          <v-btn
-            class="align-self-center rounded-xl  w-50"
-            color="green"
-            prepend-icon="mdi-calendar"
-            text="Конец"
-            @click="TaskStore.openDialogDate('end')"
+      <v-sheet
+        class="mx-10 pa-4 mb-5 bg-background-dark rounded-lg elevation-5 text-center"
+      >
+      <p class="text-primary font-weight-bold mb-3">Укажите дедлайн</p>
+        <div class="d-flex flex-column align-center justify-center ">
+          <div class="d-flex flex-wrap mb-3 ga-4 justify-center">
+            <v-btn
+              class="align-self-center rounded-xl"
+              color="green"
+              prepend-icon="mdi-calendar"
+              text="Начало"
+              variant="outlined"
+              @click="TaskStore.openDialogDate('start')"
+            />
+            <v-btn
+              class="align-self-center rounded-xl"
+              color="yellow"
+              prepend-icon="mdi-calendar"
+              text="Конец"
+              variant="outlined"
+              @click="TaskStore.openDialogDate('end')"
+            />
+          </div>
+          <div>
+            <v-chip class="elevation-7 ">
+              <span class="text-green" v-if="TaskStore.startDate">{{ formatDate(TaskStore.startDate) }}</span>
+              <span v-if="TaskStore.endDate" class="mx-3">-</span>
+              <span class="text-yellow"   v-if="TaskStore.endDate">{{ formatDate(TaskStore.endDate) }}</span>
+            </v-chip>
+          </div>
+          <DatePicker
+            v-model:selectedDate="TaskStore.currentDate"
+            @save="handleDateSave"
           />
         </div>
-        <div class="">
-          <p>Дата начала: {{ TaskStore.startDate }}</p>
-          <p>Дата окончания: {{ TaskStore.endDate }}</p>
-        </div>
-        <DatePicker 
-          v-model:selectedDate="TaskStore.currentDate"
-          @save="handleDateSave"
-        />
-      </v-row>
-      <v-divider class="mb-8" />
-      <v-row
-        justify="center"
-        class="ga-5">
+      </v-sheet>
+      <div
+        class="d-flex flex-column ga-5 justify-center align-center dialog_btn_wrapper"
+      >
         <v-btn
           color="primary"
           text="Закрыть"
-          class="elevation-5"
+          class="elevation-5 w-50"
           variant="tonal"
           @click="TaskStore.closeDialog()"
         />
         <v-btn
           color="primary"
-          text="Добавить задачу"
-          class="elevation-5"
+          text="Добавить"
+          class="elevation-5 w-50"
           @click="TaskStore.addNewTask()"
         >
           <template v-slot:prepend>
-            <v-icon
-              icon="mdi-check"
-              size="large" 
-            />
+            <v-icon icon="mdi-check" />
           </template>
         </v-btn>
-      </v-row>
+      </div>
     </v-card>
   </v-dialog>
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
-import { useMenuStore } from '@/stores/MenuStore';
-import { useTaskStore } from '@/stores/TaskStore';
-import DatePicker from '@/components/DatePicker.vue';
+import { computed, ref } from "vue";
+import { useMenuStore } from "@/stores/MenuStore";
+import { useTaskStore } from "@/stores/TaskStore";
+import DatePicker from "@/components/DatePicker.vue";
 
-const MenuStore = useMenuStore()
+const MenuStore = useMenuStore();
 
-const TaskStore = useTaskStore()
+const TaskStore = useTaskStore();
 
 const filteredCategories = computed(() =>
   MenuStore.categories.filter(
-    (category) => category.value !== 'all' && category.value !== 'newCategory',
+    (category) => category.value !== "all" && category.value !== "newCategory",
   ),
 );
 
 // данные задачи
-const titleTask = ref()
-const descriptionTask = ref()
-const isTaskInFavorites = ref(false)
-const selectedCategory = ref('Выберите категорию')
+const titleTask = ref();
+const descriptionTask = ref();
+const isTaskInFavorites = ref(false);
+const selectedCategory = ref("Выберите категорию");
 const selectedPriority = ref();
 
 const priorities = ref([
   {
-    title: 'Низкий',
-    value: 'low',
-    class: 'low-priority',
+    title: "Низкий",
+    value: "low",
+    class: "low-priority",
   },
   {
-    title: 'Средний',
-    value: 'medium',
-    class: 'medium-priority',
+    title: "Средний",
+    value: "medium",
+    class: "medium-priority",
   },
   {
-    title: 'Высокий',
-    value: 'height',
-    class: 'high-priority',
+    title: "Высокий",
+    value: "height",
+    class: "high-priority",
   },
-])
+]);
 
 const handleDateSave = (date) => {
-  if (TaskStore.selectedDateType === 'start') {
+  if (TaskStore.selectedDateType === "start") {
     TaskStore.startDate = date;
-  } else if (TaskStore.selectedDateType === 'end') {
+  } else if (TaskStore.selectedDateType === "end") {
     TaskStore.endDate = date;
   }
   TaskStore.isDialogDateOpen = false;
-  TaskStore.currentDate = null; 
+  TaskStore.currentDate = null;
 };
 
+function formatDate(date) {
+  if (date) {
+    return date.toLocaleDateString("ru-RU", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  }
+}
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .addDialog {
   width: 65%;
   margin: 0 auto;

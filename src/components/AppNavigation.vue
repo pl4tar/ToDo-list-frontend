@@ -53,12 +53,8 @@
           </v-card>
         </v-sheet>
       </div>
-      <v-sheet
-        color="background-light"
-        class="pa-2 elevation-5 rounded-lg">
-        <v-list
-          class="d-flex flex-column ga-2"
-          v-model:opened="openGroups">
+      <v-sheet color="background-light" class="pa-2 elevation-5 rounded-lg">
+        <v-list class="d-flex flex-column ga-2" v-model:opened="openGroups">
           <v-list-group value="Category">
             <template v-slot:activator="{ props }">
               <v-list-item v-bind="props">
@@ -98,9 +94,7 @@
             @click="router.push(menuItem.path)"
           >
             <template v-slot:prepend>
-              <v-icon
-                color="primary"
-                :icon="menuItem.icon" />
+              <v-icon color="primary" :icon="menuItem.icon" />
             </template>
             <v-list-item-title class="font-weight-bold">{{
               menuItem.name
@@ -113,19 +107,19 @@
 </template>
 
 <script setup>
-import { inject } from 'vue';
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { useMenuStore } from '@/stores/MenuStore';
+import { inject } from "vue";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { useMenuStore } from "@/stores/MenuStore";
 
 const MenuStore = useMenuStore();
 
 const router = useRouter();
 
-const openGroups = ref(['Category']);
+const openGroups = ref(["Category"]);
 
-const isNavShown = inject('isNavShown');
-const changeShown = inject('changeShown');
+const isNavShown = inject("isNavShown");
+const changeShown = inject("changeShown");
 
 function updateState() {
   changeShown(false);
