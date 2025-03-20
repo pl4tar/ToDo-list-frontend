@@ -9,7 +9,10 @@
     <div>
       <div class="mb-5">
         <div class="d-flex align-center justify-space-around">
-          <div class="my-5 text-h4 d-flex justify-space-evenly align-center">
+          <div 
+            class="my-5 text-h4 d-flex justify-space-evenly align-center cursor-pointer"
+            @click="router.push('/')"
+          >
             <v-icon
               color="primary"
               icon="mdi-pencil-box-multiple"
@@ -65,7 +68,7 @@
                 />
               </template>
               <div class="d-flex align-center">
-                <v-list-item-title>Категории</v-list-item-title>
+                <v-list-item-title class="font-weight-bold">Категории</v-list-item-title>
               </div>
             </v-list-item>
             <v-list-item
