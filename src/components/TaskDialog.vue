@@ -1,0 +1,226 @@
+<template>
+  <v-dialog
+    persistent
+    transition="dialog-top-transition"
+    v-model="TaskStore.isDialogShown"
+  >
+    <template v-slot:activator="{ props: activatorProps }">
+      <v-btn
+        v-bind="activatorProps"
+        color="primary"
+        class="cursor-pointer"
+        prepend-icon="mdi-pencil-plus"
+      >
+        Новая задача
+      </v-btn>
+    </template>
+    <v-card
+      class="pa-3 pb-10 addDialog"
+      color="background-dark"
+    >
+      <div class="d-flex align-center justify-center">
+        <v-icon
+          color="primary"
+          class="mr-1"
+          icon="mdi-pencil-plus" />
+        <span class="text-h5 text-primary font-weight-bols">Новая задача</span>
+      </div>
+      <v-text-field
+        prepend-icon=""
+        label="Название"
+        clearable
+        variant="underlined"
+        v-model="titleTask"
+      >
+        <template v-slot:prepend>
+          <v-icon
+            icon="mdi-plus"
+            color="primary" />
+        </template>
+      </v-text-field>
+      <v-textarea
+        label="Описание"
+        clearable 
+        v-model="descriptionTask" 
+      />
+      <v-switch
+        inset
+        class="d-flex mb-2 align-center justify-center"
+        base-color="orange-lighten-4"
+        color="warning"
+        v-model="isTaskInFavorites"
+      >
+        <template v-slot:append>
+          <span class="text-warning font-weight-bold">
+            {{ isTaskInFavorites ? "В избранном" : "Добавить в избранное" }}
+          </span>
+        </template>
+      </v-switch>
+      <v-combobox
+        color="background-dark"
+        chips
+        hide-selected
+        class="mb-2"
+        :items="filteredCategories"
+        v-model="selectedCategory"
+      />
+      <div class="d-flex flex-column ga-1 mb-10 align-center">
+        <p class="text-primary font-weight-bold">Укажите приоритет</p>
+        <v-chip-group
+          filter
+          selected-class="elevation-7 font-weight-bold"
+          v-model="selectedPriority"
+        >
+          <v-chip
+            v-for="priority in priorities"
+            color="text-white"
+            :key="priority.title"
+            :class="priority.class"
+            :text="priority.title"
+          />
+        </v-chip-group>
+      </div>
+      <v-row
+        class="d-flex flex-column align-center mb-5"
+        justify="center">
+        <p class="text-primary font-weight-bold mb-2">Укажите дедлайн</p>
+        <div class="d-flex ga-4">
+          <v-btn
+            class="align-self-center rounded-xl w-50"
+            color="green"
+            prepend-icon="mdi-calendar"
+            text="Начало"
+            @click="TaskStore.openDialogDate('start')"
+          />
+          <v-btn
+            class="align-self-center rounded-xl  w-50"
+            color="green"
+            prepend-icon="mdi-calendar"
+            text="Конец"
+            @click="TaskStore.openDialogDate('end')"
+          />
+        </div>
+        <div class="">
+          <p>Дата начала: {{ TaskStore.startDate }}</p>
+          <p>Дата окончания: {{ TaskStore.endDate }}</p>
+        </div>
+        <DatePicker 
+          v-model:selectedDate="TaskStore.currentDate"
+          @save="handleDateSave"
+        />
+      </v-row>
+      <v-divider class="mb-8" />
+      <v-row
+        justify="center"
+        class="ga-5">
+        <v-btn
+          color="primary"
+          text="Закрыть"
+          class="elevation-5"
+          variant="tonal"
+          @click="TaskStore.closeDialog()"
+        />
+        <v-btn
+          color="primary"
+          text="Добавить задачу"
+          class="elevation-5"
+          @click="TaskStore.addNewTask()"
+        >
+          <template v-slot:prepend>
+            <v-icon
+              icon="mdi-check"
+              size="large" 
+            />
+          </template>
+        </v-btn>
+      </v-row>
+    </v-card>
+  </v-dialog>
+</template>
+
+<script setup>
+import { computed, ref } from 'vue';
+import { useMenuStore } from '@/stores/MenuStore';
+import { useTaskStore } from '@/stores/TaskStore';
+import DatePicker from '@/components/DatePicker.vue';
+
+const MenuStore = useMenuStore()
+
+const TaskStore = useTaskStore()
+
+const filteredCategories = computed(() =>
+  MenuStore.categories.filter(
+    (category) => category.value !== 'all' && category.value !== 'newCategory',
+  ),
+);
+
+// данные задачи
+const titleTask = ref()
+const descriptionTask = ref()
+const isTaskInFavorites = ref(false)
+const selectedCategory = ref('Выберите категорию')
+const selectedPriority = ref();
+
+const priorities = ref([
+  {
+    title: 'Низкий',
+    value: 'low',
+    class: 'low-priority',
+  },
+  {
+    title: 'Средний',
+    value: 'medium',
+    class: 'medium-priority',
+  },
+  {
+    title: 'Высокий',
+    value: 'height',
+    class: 'high-priority',
+  },
+])
+
+const handleDateSave = (date) => {
+  if (TaskStore.selectedDateType === 'start') {
+    TaskStore.startDate = date;
+  } else if (TaskStore.selectedDateType === 'end') {
+    TaskStore.endDate = date;
+  }
+  TaskStore.isDialogDateOpen = false;
+  TaskStore.currentDate = null; 
+};
+
+</script>
+
+<style scoped>
+.addDialog {
+  width: 65%;
+  margin: 0 auto;
+}
+
+@media (min-width: 1800px) {
+  .addDialog {
+    width: 50%;
+  }
+}
+
+@media (max-width: 500px) {
+  .addDialog {
+    width: 100%;
+  }
+}
+
+.high-priority {
+  background-color: #d62c05;
+  color: #ffffff;
+}
+
+.medium-priority {
+  background-color: #923f0e;
+  color: #ffffff;
+}
+
+.low-priority {
+  background-color: #664f10;
+  color: #ffffff;
+}
+</style>

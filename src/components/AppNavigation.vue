@@ -19,19 +19,21 @@
           </div>
           <v-tooltip text="Закрыть меню">
             <template v-slot:activator="{ props }">
-              <v-icon 
+              <v-icon
                 v-bind="props"
                 class="cursor-pointer"
-                icon="mdi-view-headline" 
+                icon="mdi-view-headline"
                 @click="updateState()"
               />
             </template>
           </v-tooltip>
         </div>
         <v-sheet class="px-3 py-2 elevation-5 rounded-lg bg-background-light">
-          <v-card class="d-flex align-center justify-space-between elevation-0 bg-background-light">
+          <v-card
+            class="d-flex align-center justify-space-between elevation-0 bg-background-light"
+          >
             <div class="d-flex align-center">
-              <v-avatar  color="primary">
+              <v-avatar color="primary">
                 <v-icon icon="mdi-account-circle"></v-icon>
               </v-avatar>
               <div class="">
@@ -41,10 +43,10 @@
             </div>
             <v-tooltip text="Выход">
               <template v-slot:activator="{ props }">
-                <v-btn 
+                <v-btn
                   v-bind="props"
-                  icon="mdi-logout" 
-                  color="background-light" 
+                  icon="mdi-logout"
+                  color="background-light"
                 />
               </template>
             </v-tooltip>
@@ -54,10 +56,9 @@
       <v-sheet
         color="background-light"
         class="pa-2 elevation-5 rounded-lg">
-        <v-list 
+        <v-list
           class="d-flex flex-column ga-2"
-          v-model:opened="openGroups" 
-        >
+          v-model:opened="openGroups">
           <v-list-group value="Category">
             <template v-slot:activator="{ props }">
               <v-list-item v-bind="props">
@@ -86,7 +87,7 @@
                 />
               </template>
               <div class="d-flex align-center">
-                <v-list-item-title>{{ category.title }}</v-list-item-title>              
+                <v-list-item-title>{{ category.title }}</v-list-item-title>
               </div>
             </v-list-item>
           </v-list-group>
@@ -121,7 +122,7 @@ const MenuStore = useMenuStore();
 
 const router = useRouter();
 
-const openGroups = ref(['Category']); 
+const openGroups = ref(['Category']);
 
 const isNavShown = inject('isNavShown');
 const changeShown = inject('changeShown');
@@ -134,10 +135,10 @@ function updateState() {
 <style scoped>
 .fixed-nav {
   position: fixed !important;
-  top: 0; 
-  left: 0; 
-  height: 100vh; 
-  overflow-y: auto; 
-  z-index: 1000; 
+  top: 0;
+  left: 0;
+  height: 100vh;
+  overflow-y: auto;
+  z-index: 1000;
 }
 </style>

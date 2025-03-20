@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router';
 import AllTasks from '@/views/AllTasks.vue';
 
 const router = createRouter({
@@ -11,4 +11,4 @@ const router = createRouter({
   ],
 });
 
-export default router
+export default router;

@@ -1,16 +1,16 @@
 <template>
-  <v-icon 
+  <v-icon
     v-if="!isNavShown"
-    size="x-large" 
+    size="x-large"
     class="cursor-pointer pa-8"
     color="grey"
     icon="mdi-view-headline"
     aria-label="Открыть меню"
-    @click ="isNavShown = true"
+    @click="isNavShown = true"
   />
-  
-  <v-layout >
-    <AppNavigation/>
+
+  <v-layout>
+    <AppNavigation />
     <v-main>
       <v-container>
         <RouterView />
@@ -26,17 +26,16 @@ import { useWindowSize } from '@vueuse/core';
 
 const isNavShown = ref(true);
 
-const { width } = useWindowSize()
+const { width } = useWindowSize();
 
 function changeShown(value) {
   isNavShown.value = value;
 }
 
-watch(width, (newWidth) => { 
-  isNavShown.value = newWidth <= 850 ? false: true;
-})
+watch(width, (newWidth) => {
+  isNavShown.value = newWidth <= 850 ? false : true;
+});
 
 provide('isNavShown', isNavShown);
 provide('changeShown', changeShown);
 </script>
-
