@@ -15,6 +15,7 @@
     "@mdi/font": "^7.4.47",
     "@mdi/js": "^7.4.47",
     "canvas-confetti": "^1.9.3",
+    "@vueuse/core": "^13.0.0",
     "firebase": "^11.4.0",
     "pinia": "^3.0.1",
     "sass": "^1.86.0",
