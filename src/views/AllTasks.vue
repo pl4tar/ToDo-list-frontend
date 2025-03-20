@@ -1,7 +1,8 @@
 <template>
   <TaskDialog />
+  
 </template>
 
 <script setup>
-import TaskDialog from "@/components/TaskDialog.vue";
+import TaskDialog from '@/components/TaskDialog.vue';
 </script>

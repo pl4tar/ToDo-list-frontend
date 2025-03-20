@@ -53,26 +53,29 @@
           </v-card>
         </v-sheet>
       </div>
-      <v-sheet color="background-light" class="pa-2 elevation-5 rounded-lg">
-        <v-list class="d-flex flex-column ga-2" v-model:opened="openGroups">
-          <v-list-group value="Category">
-            <template v-slot:activator="{ props }">
-              <v-list-item v-bind="props">
-                <template v-slot:prepend>
-                  <v-icon
-                    icon="mdi-view-grid-plus"
-                    size="large"
-                    color="primary"
-                  />
-                </template>
-                <span class="font-weight-bold">Категории</span>
-              </v-list-item>
-            </template>
+      <v-sheet class="pa-2 elevation-5 rounded-lg bg-background-light mb-4">
+        <v-list
+          class="d-flex flex-column ga-2"
+        >
+          <v-list>
+            <v-list-item class="mb-2">
+              <template v-slot:prepend>
+                <v-icon
+                  icon="mdi-view-grid-plus"
+                  class="elevation-10 pa-5 rounded-lg"
+                  size="large"
+                  color="primary"
+                />
+              </template>
+              <div class="d-flex align-center">
+                <v-list-item-title>Категории</v-list-item-title>
+              </div>
+            </v-list-item>
             <v-list-item
               v-for="category in MenuStore.categories"
               :key="category.id"
               :value="category.value"
-              class="mb-2"
+              class="mb-2 pl-70"
             >
               <template v-slot:prepend>
                 <v-icon
@@ -86,7 +89,7 @@
                 <v-list-item-title>{{ category.title }}</v-list-item-title>
               </div>
             </v-list-item>
-          </v-list-group>
+          </v-list>
           <v-list-item
             v-for="menuItem in MenuStore.menuList"
             :key="menuItem.id"
@@ -94,7 +97,9 @@
             @click="router.push(menuItem.path)"
           >
             <template v-slot:prepend>
-              <v-icon color="primary" :icon="menuItem.icon" />
+              <v-icon
+                color="primary"
+                :icon="menuItem.icon" />
             </template>
             <v-list-item-title class="font-weight-bold">{{
               menuItem.name
@@ -107,19 +112,17 @@
 </template>
 
 <script setup>
-import { inject } from "vue";
-import { ref } from "vue";
-import { useRouter } from "vue-router";
-import { useMenuStore } from "@/stores/MenuStore";
+import { inject } from 'vue';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useMenuStore } from '@/stores/MenuStore';
 
 const MenuStore = useMenuStore();
 
 const router = useRouter();
 
-const openGroups = ref(["Category"]);
-
-const isNavShown = inject("isNavShown");
-const changeShown = inject("changeShown");
+const isNavShown = inject('isNavShown');
+const changeShown = inject('changeShown');
 
 function updateState() {
   changeShown(false);

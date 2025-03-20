@@ -20,9 +20,9 @@
 </template>
 
 <script setup>
-import AppNavigation from "@/components/AppNavigation.vue";
-import { ref, watch, provide } from "vue";
-import { useWindowSize } from "@vueuse/core";
+import AppNavigation from '@/components/AppNavigation.vue';
+import { ref, watch, provide } from 'vue';
+import { useWindowSize } from '@vueuse/core';
 
 const isNavShown = ref(true);
 
@@ -36,6 +36,6 @@ watch(width, (newWidth) => {
   isNavShown.value = newWidth <= 850 ? false : true;
 });
 
-provide("isNavShown", isNavShown);
-provide("changeShown", changeShown);
+provide('isNavShown', isNavShown);
+provide('changeShown', changeShown);
 </script>

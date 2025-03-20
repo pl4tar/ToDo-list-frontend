@@ -14,9 +14,14 @@
         Новая задача
       </v-btn>
     </template>
-    <v-card class="pa-3 pb-10 addDialog" color="background-dark">
+    <v-card
+      class="pa-3 pb-10 addDialog"
+      color="background-dark">
       <div class="d-flex align-center justify-center">
-        <v-icon color="primary" class="mr-1" icon="mdi-pencil-plus" />
+        <v-icon
+          color="primary"
+          class="mr-1"
+          icon="mdi-pencil-plus" />
         <span class="text-h5 text-primary font-weight-bols">Новая задача</span>
       </div>
       <v-text-field
@@ -27,10 +32,15 @@
         v-model="titleTask"
       >
         <template v-slot:prepend>
-          <v-icon icon="mdi-plus" color="primary" />
+          <v-icon
+            icon="mdi-plus"
+            color="primary" />
         </template>
       </v-text-field>
-      <v-textarea label="Описание" clearable v-model="descriptionTask" />
+      <v-textarea
+        label="Описание"
+        clearable
+        v-model="descriptionTask" />
       <v-switch
         inset
         class="d-flex mb-2 align-center justify-center"
@@ -68,34 +78,42 @@
           />
         </v-chip-group>
       </div>
-      <v-sheet
-        class="mx-10 pa-4 mb-5 bg-background-dark rounded-lg elevation-5 text-center"
-      >
-      <p class="text-primary font-weight-bold mb-3">Укажите дедлайн</p>
-        <div class="d-flex flex-column align-center justify-center ">
-          <div class="d-flex flex-wrap mb-3 ga-4 justify-center">
+      <v-sheet class="mx-6 pa-4 mb-5 bg-background-dark rounded-lg elevation-5 text-center">
+        <p class="text-primary font-weight-bold mb-3">Укажите дедлайн</p>
+        <div class="d-flex flex-column align-center justify-center">
+          <div class="d-flex flex-column flex-md-row justify-center ga-3 mb-3">
             <v-btn
-              class="align-self-center rounded-xl"
+              class="align-self-center rounded-xl w-75 px-8"
               color="green"
               prepend-icon="mdi-calendar"
               text="Начало"
               variant="outlined"
+              density="compact"
               @click="TaskStore.openDialogDate('start')"
             />
             <v-btn
-              class="align-self-center rounded-xl"
+              class="align-self-center rounded-xl w-75"
               color="yellow"
               prepend-icon="mdi-calendar"
               text="Конец"
               variant="outlined"
+              density="compact"
               @click="TaskStore.openDialogDate('end')"
             />
           </div>
-          <div>
-            <v-chip class="elevation-7 ">
-              <span class="text-green" v-if="TaskStore.startDate">{{ formatDate(TaskStore.startDate) }}</span>
-              <span v-if="TaskStore.endDate" class="mx-3">-</span>
-              <span class="text-yellow"   v-if="TaskStore.endDate">{{ formatDate(TaskStore.endDate) }}</span>
+          <div class="d-flex flex-column flex-md-row justify-center ga-1 align-center mb-3">
+            <v-chip
+              v-if="TaskStore.startDate"
+              class="elevation-4 bg-green text-center"
+            >
+              {{ formatDate(TaskStore.startDate) }}
+            </v-chip>
+            <span>-</span>
+            <v-chip
+              v-if="TaskStore.endDate"
+              class="elevation-4 bg-yellow"
+            >
+              {{ formatDate(TaskStore.endDate) }}
             </v-chip>
           </div>
           <DatePicker
@@ -104,9 +122,7 @@
           />
         </div>
       </v-sheet>
-      <div
-        class="d-flex flex-column ga-5 justify-center align-center dialog_btn_wrapper"
-      >
+      <div class="d-flex flex-column ga-5 justify-center align-center dialog_btn_wrapper">
         <v-btn
           color="primary"
           text="Закрыть"
@@ -130,10 +146,10 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
-import { useMenuStore } from "@/stores/MenuStore";
-import { useTaskStore } from "@/stores/TaskStore";
-import DatePicker from "@/components/DatePicker.vue";
+import { computed, ref } from 'vue';
+import { useMenuStore } from '@/stores/MenuStore';
+import { useTaskStore } from '@/stores/TaskStore';
+import DatePicker from '@/components/DatePicker.vue';
 
 const MenuStore = useMenuStore();
 
@@ -141,7 +157,7 @@ const TaskStore = useTaskStore();
 
 const filteredCategories = computed(() =>
   MenuStore.categories.filter(
-    (category) => category.value !== "all" && category.value !== "newCategory",
+    (category) => category.value !== 'all' && category.value !== 'newCategory',
   ),
 );
 
@@ -149,31 +165,31 @@ const filteredCategories = computed(() =>
 const titleTask = ref();
 const descriptionTask = ref();
 const isTaskInFavorites = ref(false);
-const selectedCategory = ref("Выберите категорию");
+const selectedCategory = ref('Выберите категорию');
 const selectedPriority = ref();
 
 const priorities = ref([
   {
-    title: "Низкий",
-    value: "low",
-    class: "low-priority",
+    title: 'Низкий',
+    value: 'low',
+    class: 'low-priority',
   },
   {
-    title: "Средний",
-    value: "medium",
-    class: "medium-priority",
+    title: 'Средний',
+    value: 'medium',
+    class: 'medium-priority',
   },
   {
-    title: "Высокий",
-    value: "height",
-    class: "high-priority",
+    title: 'Высокий',
+    value: 'height',
+    class: 'high-priority',
   },
 ]);
 
 const handleDateSave = (date) => {
-  if (TaskStore.selectedDateType === "start") {
+  if (TaskStore.selectedDateType === 'start') {
     TaskStore.startDate = date;
-  } else if (TaskStore.selectedDateType === "end") {
+  } else if (TaskStore.selectedDateType === 'end') {
     TaskStore.endDate = date;
   }
   TaskStore.isDialogDateOpen = false;
@@ -182,10 +198,10 @@ const handleDateSave = (date) => {
 
 function formatDate(date) {
   if (date) {
-    return date.toLocaleDateString("ru-RU", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
+    return date.toLocaleDateString('ru-RU', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
     });
   }
 }
@@ -222,5 +238,9 @@ function formatDate(date) {
 .low-priority {
   background-color: #664f10;
   color: #ffffff;
+}
+
+@media (max-width: 650px) {
+
 }
 </style>

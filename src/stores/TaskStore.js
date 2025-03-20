@@ -1,7 +1,7 @@
-import { defineStore } from "pinia";
-import confetti from "canvas-confetti";
+import { defineStore } from 'pinia';
+import confetti from 'canvas-confetti';
 
-export const useTaskStore = defineStore("taskStore", {
+export const useTaskStore = defineStore('taskStore', {
   state: () => ({
     isDialogShown: false,
     isDialogDateOpen: false,
@@ -26,7 +26,7 @@ export const useTaskStore = defineStore("taskStore", {
         startVelocity: 50,
         ticks: 100,
         origin: { y: 0.6 },
-        colors: ["#f0f0f0", "#5e03fc", "#fc036b"],
+        colors: ['#f0f0f0', '#5e03fc', '#fc036b'],
       });
     },
 
@@ -38,7 +38,7 @@ export const useTaskStore = defineStore("taskStore", {
     openDialogDate(type) {
       this.isDialogDateOpen = true;
       this.selectedDateType = type;
-      this.currentDate = type === "start" ? this.startDate : this.endDate;
+      this.currentDate = type === 'start' ? this.startDate : this.endDate;
     },
   },
 });
