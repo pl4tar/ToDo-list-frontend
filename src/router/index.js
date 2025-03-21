@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import AllTasks from '@/views/AllTasks.vue';
-import CalendarView from '@/views/CalendarView.vue';
+import AllTasks from '@/pages/AllTasks.vue';
+import CalendarView from '@/pages/CalendarView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

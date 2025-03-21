@@ -9,7 +9,7 @@
     <div>
       <div class="mb-5">
         <div class="d-flex align-center justify-space-around">
-          <div 
+          <div
             class="my-5 text-h4 d-flex justify-space-evenly align-center cursor-pointer"
             @click="router.push('/')"
           >
@@ -59,7 +59,7 @@
       <v-sheet class="elevation-5 rounded-lg bg-background-light">
         <v-list class="d-flex flex-column ga-2">
           <v-list>
-            <v-list-item >
+            <v-list-item>
               <template v-slot:prepend>
                 <v-icon
                   icon="mdi-view-grid-plus"
@@ -68,7 +68,9 @@
                 />
               </template>
               <div class="d-flex align-center">
-                <v-list-item-title class="font-weight-bold">Категории</v-list-item-title>
+                <v-list-item-title class="font-weight-bold"
+                >Категории</v-list-item-title
+                >
               </div>
             </v-list-item>
             <v-list-item
@@ -100,8 +102,7 @@
             <template v-slot:prepend>
               <v-icon
                 color="primary"
-                :icon="menuItem.icon" 
-              />
+                :icon="menuItem.icon" />
             </template>
             <v-list-item-title class="font-weight-bold">
               {{ menuItem.name }}
@@ -114,8 +115,7 @@
 </template>
 
 <script setup>
-import { inject } from 'vue';
-import { ref } from 'vue';
+import { inject, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useMenuStore } from '@/stores/MenuStore';
 
@@ -129,6 +129,7 @@ const changeShown = inject('changeShown');
 function updateState() {
   changeShown(false);
 }
+
 </script>
 
 <style scoped>

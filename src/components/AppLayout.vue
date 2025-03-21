@@ -32,7 +32,7 @@ function changeShown(value) {
 }
 
 watch(width, (newWidth) => {
-  isNavShown.value = newWidth <= 850 ? false : true;
+  isNavShown.value = newWidth <= 1100 ? false : true;
 });
 
 provide('isNavShown', isNavShown);

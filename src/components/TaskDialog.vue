@@ -14,15 +14,13 @@
         Новая задача
       </v-btn>
     </template>
-    <v-card
-      class="pa-3 pb-10 addDialog"
-      color="background-dark">
+    <v-card class="pa-3 pb-10 rounded-lg addDialog bg-background-light">
       <div class="d-flex align-center justify-center">
         <v-icon
-          color="primary"
+          color=""
           class="mr-1"
-          icon="mdi-pencil-plus" />
-        <span class="text-h5 text-primary font-weight-bols">Новая задача</span>
+          icon="mdi-pencil-plus" 
+        />
       </div>
       <v-text-field
         prepend-icon=""
@@ -70,16 +68,18 @@
           v-model="selectedPriority"
         >
           <v-chip
-            v-for="priority in priorities"
-            color="text-white"
+            v-for="priority in MenuStore.priorities"
+            variant="elevated"
             :key="priority.title"
-            :class="priority.class"
+            :color="priority.color"
             :text="priority.title"
           />
         </v-chip-group>
       </div>
-      <v-sheet class="mx-6 pa-4 mb-5 bg-background-dark rounded-lg elevation-5 text-center">
-        <p class="text-primary font-weight-bold mb-3">Добавить дедлайн</p>
+      <v-sheet
+        class="mx-6 pa-4 mb-5 bg-background-dark rounded-lg elevation-5 text-center"
+      >
+        <p class="text-primary font-weight-bold mb-3">Укажите дату выполнения задачи или добавьте дедлайн, выбрав дату окончания</p>
         <div class="d-flex flex-column align-center justify-center">
           <div class="d-flex flex-column flex-md-row justify-center ga-3 mb-3">
             <v-btn
@@ -101,7 +101,9 @@
               @click="TaskStore.openDialogDate('end')"
             />
           </div>
-          <div class="d-flex flex-column flex-md-row justify-center ga-1 align-center mb-3">
+          <div
+            class="d-flex flex-column flex-md-row justify-center ga-1 align-center mb-3"
+          >
             <v-chip
               v-if="TaskStore.startDate"
               class="elevation-4 bg-green text-center"
@@ -111,8 +113,7 @@
             <span v-if="TaskStore.startDate && TaskStore.endDate">-</span>
             <v-chip
               v-if="TaskStore.endDate"
-              class="elevation-4 bg-yellow"
-            >
+              class="elevation-4 bg-yellow">
               {{ formatDate(TaskStore.endDate) }}
             </v-chip>
           </div>
@@ -122,7 +123,9 @@
           />
         </div>
       </v-sheet>
-      <div class="d-flex flex-column ga-5 justify-center align-center dialog_btn_wrapper">
+      <div
+        class="d-flex flex-column ga-5 justify-center align-center dialog_btn_wrapper"
+      >
         <v-btn
           color="primary"
           text="Закрыть"
@@ -132,7 +135,7 @@
         />
         <v-btn
           color="primary"
-          text="Добавить"
+          text="Готово"
           class="elevation-5 w-50"
           @click="TaskStore.addNewTask()"
         >
@@ -150,8 +153,8 @@ import { computed, ref } from 'vue';
 import { useMenuStore } from '@/stores/MenuStore';
 import { useTaskStore } from '@/stores/TaskStore';
 import DatePicker from '@/components/DatePicker.vue';
-import { useFormatDate } from '@/composables/useFormatDate'; 
- 
+import { useFormatDate } from '@/composables/useFormatDate';
+
 const MenuStore = useMenuStore();
 
 const TaskStore = useTaskStore();
@@ -169,24 +172,6 @@ const descriptionTask = ref();
 const isTaskInFavorites = ref(false);
 const selectedCategory = ref('Выберите категорию');
 const selectedPriority = ref();
-
-const priorities = ref([
-  {
-    title: 'Низкий',
-    value: 'low',
-    class: 'low-priority',
-  },
-  {
-    title: 'Средний',
-    value: 'medium',
-    class: 'medium-priority',
-  },
-  {
-    title: 'Высокий',
-    value: 'height',
-    class: 'high-priority',
-  },
-]);
 
 const handleDateSave = (date) => {
   if (TaskStore.selectedDateType === 'start') {
@@ -215,24 +200,5 @@ const handleDateSave = (date) => {
   .addDialog {
     width: 100%;
   }
-}
-
-.high-priority {
-  background-color: #d62c05;
-  color: #ffffff;
-}
-
-.medium-priority {
-  background-color: #923f0e;
-  color: #ffffff;
-}
-
-.low-priority {
-  background-color: #664f10;
-  color: #ffffff;
-}
-
-@media (max-width: 650px) {
-
 }
 </style>

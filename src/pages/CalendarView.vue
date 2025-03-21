@@ -3,8 +3,7 @@
     hide-day-header
     type="week"
     hide-week-number
-    :events="events"
-  />
+    :events="events" />
 </template>
 
 <script setup>

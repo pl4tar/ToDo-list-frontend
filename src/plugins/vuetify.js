@@ -9,6 +9,7 @@ import { VCalendar } from 'vuetify/labs/VCalendar';
 const darkTheme = {
   colors: {
     primary: '#6c80e7',
+    secondary: '#9FA8DA',
     background: '#282828',
     'background-light': '#464646',
     'background-dark': '#3a3a3a',

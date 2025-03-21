@@ -33,7 +33,7 @@ export const useMenuStore = defineStore('menuStore', {
         name: 'Обратная связь',
         value: 'feedback',
         icon: 'mdi-message-alert',
-      }
+      },
     ],
     categories: [
       {
@@ -56,14 +56,14 @@ export const useMenuStore = defineStore('menuStore', {
         title: 'Учеба',
         value: 'studies',
         icon: 'mdi-book-open-page-variant',
-        iconColor: 'orange-darken-1',
+        iconColor: 'cyan-darken-3',
       },
       {
         id: 4,
         title: 'Личное',
         value: 'personal',
         icon: 'mdi-account',
-        iconColor: 'deep-orange-darken-1',
+        iconColor: 'deep-orange-darken-3',
       },
       {
         id: 5,
@@ -71,7 +71,27 @@ export const useMenuStore = defineStore('menuStore', {
         value: 'withoutCategory',
         icon: 'mdi-flip-to-back',
         iconColor: 'grey',
-      }
+      },
     ],
+    priorities: [
+      {
+        title: 'Низкий',
+        value: 'low',
+        class: 'low-priority',
+        color: 'blue-darken-1'
+      },
+      {
+        title: 'Средний',
+        value: 'medium',
+        class: 'medium-priority',
+        color: 'orange-darken-1'
+      },
+      {
+        title: 'Высокий',
+        value: 'height',
+        class: 'high-priority',
+        color: 'red-darken-1'
+      },
+    ]
   }),
 });

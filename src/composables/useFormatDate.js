@@ -7,10 +7,10 @@ export function useFormatDate() {
         day: 'numeric',
       });
     }
-    return ''
+    return '';
   }
 
   return {
-    formatDate
+    formatDate,
   };
 }

@@ -3,7 +3,7 @@ import App from '@/App.vue';
 import { createPinia } from 'pinia';
 import vuetify from '@/plugins/vuetify';
 import router from '@/router';
-import '@/styles/main.css'
+import '@/styles/main.css';
 
 const app = createApp(App);
 
