@@ -9,9 +9,9 @@ import { VCalendar } from 'vuetify/labs/VCalendar';
 const darkTheme = {
   colors: {
     primary: '#6c80e7',
-    background: '#6b6b6b',
+    background: '#282828',
     'background-light': '#464646',
-    'background-dark': '#393939',
+    'background-dark': '#3a3a3a',
     warning: '#FB8C00',
   },
 };
@@ -45,7 +45,7 @@ const vuetify = createVuetify({
   },
   defaults: {
     VContainer: {
-      style: [{ maxWidth: '1400px' }],
+      style: [{ maxWidth: '1100px' }],
     },
   },
 });
