@@ -1,17 +1,16 @@
 <template>
-  <v-icon
-    v-if="!isNavShown"
-    size="x-large"
-    class="cursor-pointer pt-10 pl-10"
-    color="grey"
-    icon="mdi-view-headline"
-    aria-label="Открыть меню"
-    @click="isNavShown = true"
-  />
   <v-layout>
     <AppNavigation />
     <v-main class="pt-10">
-      <v-container>
+      <v-container class="pa-10">
+        <v-icon
+          v-if="!isNavShown"
+          size="x-large"
+          class="cursor-pointer pt-10 pl-10 icon-open"
+          color="grey"
+          icon="mdi-view-headline"
+          @click="isNavShown = true"
+        />
         <RouterView />
       </v-container>
     </v-main>
@@ -38,3 +37,11 @@ watch(width, (newWidth) => {
 provide('isNavShown', isNavShown);
 provide('changeShown', changeShown);
 </script>
+
+<style scoped>
+.icon-open {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+</style>

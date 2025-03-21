@@ -1,8 +1,6 @@
 <template>
   <v-navigation-drawer
-    v-if="isNavShown"
-    ref="navigationDrawerRef"
-    permanent
+    v-model="isNavShown"
     class="px-4 bg-background-dark fixed-nav"
     width="350"
   >
@@ -129,16 +127,4 @@ const changeShown = inject('changeShown');
 function updateState() {
   changeShown(false);
 }
-
 </script>
-
-<style scoped>
-.fixed-nav {
-  position: fixed !important;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  overflow-y: auto;
-  z-index: 1000;
-}
-</style>
