@@ -1,7 +1,6 @@
-
 <template>
   <v-card-text class="mt-12">
-    <h4 class="text-center">Зарегистрируйте аккаунт</h4>
+    <h3 class="text-center">Зарегистрируйте аккаунт</h3>
     <v-row
       align="center"
       justify="center">
@@ -60,7 +59,7 @@
           block
           tile>Регистрация</v-btn>
 
-        <h5 class="text-center grey--text mt-4 mb-3">Или зарегистрируйтесь, используя:</h5>
+        <h6 class="text-center grey--text mt-4 mb-3">Или зарегистрируйтесь, используя:</h6>
         <div class="d-flex justify-center align-center mx-10 mb-11">
           <v-btn
             depressed

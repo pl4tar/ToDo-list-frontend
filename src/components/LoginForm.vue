@@ -1,9 +1,9 @@
 <template>
   <v-card-text class="mt-12">
-    <h4 class="text-center">Войдите в свой аккаунт</h4>
-    <h6 class="text-center grey--text">
+    <h3 class="text-center">Войдите в свой аккаунт</h3>
+    <h5 class="text-center grey--text">
       Войдите в свой аккаунт чтобы пользоваться всеми возможностями ToDo-List
-    </h6>
+    </h5>
     <v-row
       align="center"
       justify="center">
@@ -37,7 +37,7 @@
           block
           tile>Войти</v-btn>
 
-        <h5 class="text-center mt-4 mb-3">Или войдите через:</h5>
+        <h6 class="text-center mt-4 mb-3">Или войдите через:</h6>
         <div class="d-flex justify-center align-center mx-10 mb-16">
           <v-btn
             depressed

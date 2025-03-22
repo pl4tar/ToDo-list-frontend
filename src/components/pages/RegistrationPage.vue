@@ -5,7 +5,8 @@
       justify="center">
       <v-col
         cols="12"
-        sm="10">
+        sm="10"
+      >
         <v-card
           class="elevation-6 mt-10"
           color="#696969">
@@ -24,9 +25,9 @@
                   <div style="text-align: center; padding: 180px 0;">
                     <v-card-text class="white--text">
                       <h3 class="text-center">Нет аккаунта?</h3>
-                      <h6 class="text-center">
+                      <h5 class="text-center">
                         Давайте все подготовим чтобы вы могли успешно пользоваться <br />данным сервисом
-                      </h6>
+                      </h5>
                     </v-card-text>
                     <div class="text-center">
                       <v-btn
@@ -48,9 +49,9 @@
                   <div style="text-align: center; padding: 180px 0;">
                     <v-card-text class="white--text">
                       <h3 class="text-center">Уже зарегистрировались?</h3>
-                      <h6 class="text-center">
+                      <h5 class="text-center">
                         Войдите в свой аккаунт и наслаждайтесь ToDo-List
-                      </h6>
+                      </h5>
                     </v-card-text>
                     <div class="text-center">
                       <v-btn
@@ -80,7 +81,7 @@ import { ref } from 'vue';
 import RegistrationForm from '@/components/RegistrationForm.vue';
 import LoginForm from '@/components/LoginForm.vue';
 
-// Реактивная переменная
+
 const step = ref(1);
 </script>
 
@@ -90,5 +91,10 @@ const step = ref(1);
 }
 .rounded-br-xl {
   border-bottom-right-radius: 300px !important;
+}
+@media (max-width: 960px) {
+  .rounded-bl-xl, .rounded-br-xl {
+    border-radius: 0 !important; /* убрал закругления на мобилках */
+  }
 }
 </style>
