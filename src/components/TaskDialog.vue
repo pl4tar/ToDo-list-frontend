@@ -35,12 +35,12 @@
       <v-switch
         inset
         class="d-flex mb-2 align-center justify-center"
-        base-color="orange-lighten-4"
+        base-color="primary"
         color="warning"
         v-model="isTaskInFavorites"
       >
         <template v-slot:append>
-          <span class="text-warning font-weight-bold">
+          <span class="text-primary font-weight-bold">
             {{ isTaskInFavorites ? "В избранном" : "Добавить в избранное" }}
           </span>
         </template>
@@ -89,7 +89,7 @@
             />
             <v-btn
               class="align-self-center rounded-xl w-75"
-              color="yellow"
+              color="primary"
               prepend-icon="mdi-calendar"
               text="Конец"
               variant="outlined"
@@ -109,7 +109,7 @@
             <span v-if="TaskStore.startDate && TaskStore.endDate">-</span>
             <v-chip
               v-if="TaskStore.endDate"
-              class="elevation-4 bg-yellow">
+              class="elevation-4 bg-primary">
               {{ formatDate(TaskStore.endDate) }}
             </v-chip>
           </div>

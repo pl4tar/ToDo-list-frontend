@@ -21,18 +21,19 @@
         variant="solo-filled"
         label="Поиск"
         class="mb-4"
-        color="primary"
-        prepend-icon="mdi-magnify"
+        prepend-inner-icon="mdi-magnify"
         bg-color="background-dark"
       />
       <div class="d-flex justify-space-evenly w-xs-25">
         <v-select
+          item-color="primary"
           v-model="filtrationValue"
           :items="filtrationValues"
           variant="solo-filled"
           bg-color="background-dark"
-          prepend-icon="mdi-sort"
+          prepend-inner-icon="mdi-sort"
           label="Сортировать по"
+          menu-icon="mdi-chevron-down"
         />
       </div>
     </v-responsive>
@@ -157,10 +158,15 @@ const expiredTasks = computed(() => {
     const now = new Date();
 
     // просроченные задачи (но не выполненные)
-    if (task.isTaskCompleted) {return false;}
-    if (task.endDate && new Date(task.endDate) < now) {return true;}
-    if (!task.endDate && task.startDate && new Date(task.startDate) < now)
-      {return true;}
+    if (task.isTaskCompleted) {
+      return false;
+    }
+    if (task.endDate && new Date(task.endDate) < now) {
+      return true;
+    }
+    if (!task.endDate && task.startDate && new Date(task.startDate) < now) {
+      return true;
+    }
 
     return false;
   });
@@ -232,3 +238,10 @@ onMounted(() => {
   onUnmounted(() => clearInterval(interval));
 });
 </script>
+
+<style scoped>
+/* .themeBtn {
+  position: absolute;
+  right: 10px;
+} */
+</style>

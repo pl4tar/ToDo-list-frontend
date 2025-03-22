@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex align-center ga-3 mb-5">
     <v-card
-      class="w-100 bg-background-light rounded-lg elevation-5 pr-3"
+      class="w-100 bg-background-light rounded-lg elevation-10 pr-3"
       @click="isDialogDetailsOpen = true"
     >
       <v-card-title class="flex-center">
@@ -39,7 +39,7 @@
             <v-btn
               variant="tonal"
               size="small"
-              class="text-warning elevation-3 width-100"
+              class="text-secondary elevation-3 width-100"
               prepend-icon="mdi-pencil"
               text="Изменить"
               @click.stop

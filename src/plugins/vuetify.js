@@ -19,12 +19,12 @@ const darkTheme = {
 
 const lightTheme = {
   colors: {
-    // // background: '#f0f0f0',
-    // 'background-light': '#464646',
-    // primary: '#6c80e7',
-    // 'background-dark': '#393939',
-    // 'background-primary': 'rgb(240, 240, 240)',
-    // secondary: '#b146cf',
+    background: '#ebebeb',
+    'background-light': '#e2e2e2',
+    primary: '#6c80e7',
+    'background-dark': '#dadada',
+    'background-primary': 'rgb(240, 240, 240)',
+    secondary: '#6f54c2',
   },
 };
 
