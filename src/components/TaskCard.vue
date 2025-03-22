@@ -79,24 +79,22 @@
               <div>
                 <p class="mb-1">Категория</p>
                 <v-chip
-                  v-if="task.category"
                   class="elevation-1 mb-2"
                   variant="elevated"
                   :color="getCategoryData(task.category, 'iconColor')"
                 >
-                  {{ getCategoryData(task.category, "title") }}
+                  {{ getCategoryData(task.category, "title") || 'Не задано'}}
                 </v-chip>
               </div>
               <v-divider class="mb-4" />
               <div>
                 <p class="mb-1">Приоритет</p>
-                <v-chip
-                  v-if="task.category"
+                <v-chip    
                   class="elevation-1 mb-2"
                   variant="elevated"
                   :color="getPriorityColor(task.priority, 'color')"
                 >
-                  {{ getPriorityColor(task.priority, "title") }}
+                  {{ getPriorityColor(task.priority, "title") || 'Не задано'}}
                 </v-chip>
               </div>
               <v-divider class="mb-4" />
@@ -110,9 +108,7 @@
                 >
                   <template v-slot:prepend>
                     <v-icon
-                      :icon="
-                        task.isTaskInFavorites ? 'mdi-close-thick' : 'mdi-plus'
-                      "
+                      :icon="task.isTaskInFavorites ? 'mdi-close-thick' : 'mdi-plus'"
                     />
                   </template>
                 </v-btn>

@@ -35,8 +35,7 @@
       <v-switch
         inset
         class="d-flex mb-2 align-center justify-center"
-        base-color="primary"
-        color="warning"
+        color="primary"
         v-model="isTaskInFavorites"
       >
         <template v-slot:append>

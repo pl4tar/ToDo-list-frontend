@@ -21,7 +21,7 @@ const lightTheme = {
   colors: {
     background: '#ebebeb',
     'background-light': '#e2e2e2',
-    primary: '#6c80e7',
+    primary: '#4b50bf',
     'background-dark': '#dadada',
     'background-primary': 'rgb(240, 240, 240)',
     secondary: '#6f54c2',
