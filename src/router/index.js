@@ -1,18 +1,18 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import AllTasks from '@/pages/AllTasks.vue';
-import CalendarView from '@/pages/CalendarView.vue';
+import TasksPage from '@/pages/TasksPage.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      component: AllTasks,
+      redirect: '/tasks/all',
     },
     {
-      path: '/calendarView',
-      component: CalendarView,
-    },
+      path: '/tasks/:filter',
+      component: TasksPage,
+      props: true,
+    }
   ],
 });
 

@@ -72,7 +72,7 @@
               </div>
             </v-list-item>
             <v-list-item
-              v-for="category in MenuStore.categories"
+              v-for="category in TaskConfigStore.categories"
               :key="category.id"
               :value="category.value"
               class="mb-1 pl-70"
@@ -92,7 +92,7 @@
             </v-list-item>
           </v-list>
           <v-list-item
-            v-for="menuItem in MenuStore.menuList"
+            v-for="menuItem in TaskConfigStore.menuList"
             :key="menuItem.id"
             :value="menuItem.value"
             @click="router.push(menuItem.path)"
@@ -100,7 +100,8 @@
             <template v-slot:prepend>
               <v-icon
                 color="primary"
-                :icon="menuItem.icon" />
+                :icon="menuItem.icon" 
+              />
             </template>
             <v-list-item-title class="font-weight-bold">
               {{ menuItem.name }}
@@ -113,11 +114,11 @@
 </template>
 
 <script setup>
-import { inject, watch } from 'vue';
+import { inject } from 'vue';
 import { useRouter } from 'vue-router';
-import { useMenuStore } from '@/stores/MenuStore';
+import { useTaskConfigStore } from '@/stores/TaskConfigStore';
 
-const MenuStore = useMenuStore();
+const TaskConfigStore = useTaskConfigStore();
 
 const router = useRouter();
 

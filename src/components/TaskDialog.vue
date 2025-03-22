@@ -14,14 +14,7 @@
         Новая задача
       </v-btn>
     </template>
-    <v-card class="pa-3 pb-10 rounded-lg addDialog bg-background-light">
-      <div class="d-flex align-center justify-center">
-        <v-icon
-          color=""
-          class="mr-1"
-          icon="mdi-pencil-plus" 
-        />
-      </div>
+    <v-card class="pa-4 pb-10 rounded-lg addDialog bg-background-light">
       <v-text-field
         prepend-icon=""
         label="Название"
@@ -68,7 +61,7 @@
           v-model="selectedPriority"
         >
           <v-chip
-            v-for="priority in MenuStore.priorities"
+            v-for="priority in TaskConfigStore.priorities"
             variant="elevated"
             :key="priority.title"
             :color="priority.color"
@@ -79,7 +72,10 @@
       <v-sheet
         class="mx-6 pa-4 mb-5 bg-background-dark rounded-lg elevation-5 text-center"
       >
-        <p class="text-primary font-weight-bold mb-3">Укажите дату выполнения задачи или добавьте дедлайн, выбрав дату окончания</p>
+        <p class="text-primary font-weight-bold mb-3">
+          Укажите дату выполнения задачи или добавьте дедлайн, выбрав дату
+          окончания
+        </p>
         <div class="d-flex flex-column align-center justify-center">
           <div class="d-flex flex-column flex-md-row justify-center ga-3 mb-3">
             <v-btn
@@ -150,18 +146,18 @@
 
 <script setup>
 import { computed, ref } from 'vue';
-import { useMenuStore } from '@/stores/MenuStore';
+import { useTaskConfigStore } from '@/stores/TaskConfigStore';
 import { useTaskStore } from '@/stores/TaskStore';
 import DatePicker from '@/components/DatePicker.vue';
 import { useFormatDate } from '@/composables/useFormatDate';
 
-const MenuStore = useMenuStore();
+const TaskConfigStore = useTaskConfigStore();
 
 const TaskStore = useTaskStore();
 const { formatDate } = useFormatDate();
 
 const filteredCategories = computed(() =>
-  MenuStore.categories.filter(
+  TaskConfigStore.categories.filter(
     (category) => category.value !== 'all' && category.value !== 'newCategory',
   ),
 );

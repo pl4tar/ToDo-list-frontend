@@ -1,19 +1,20 @@
 <template>
   <div class="d-flex align-center ga-3 mb-5">
-    <v-card 
-      class="w-100 bg-background-light rounded-lg elevation-5 pr-3"   
+    <v-card
+      class="w-100 bg-background-light rounded-lg elevation-5 pr-3"
       @click="isDialogDetailsOpen = true"
     >
       <v-card-title class="flex-center">
         {{ task.title }}
       </v-card-title>
-      <v-divider/>
+      <v-divider />
       <div class="pa-3">
-        <div class="flex-center mb-3 text-body-1 text-secondary text-subtitle-1 mt-1 d-flex align-center">
+        <div
+          class="flex-center mb-3 text-body-1 text-secondary text-subtitle-1 mt-1 d-flex align-center"
+        >
           <v-icon
             icon="mdi-calendar-range"
-            class="mr-1" 
-          />
+            class="mr-1" />
           <p class="text-center">
             {{ formatDate(task.startDate) }}
             <span v-if="task.startDate && task.endDate">-</span>
@@ -22,9 +23,11 @@
           </p>
         </div>
         <div class="d-flex align-center justify-space-between direction-column">
-          <div class="d-flex ga-5 flex-wrap align-center justify-space-between ga-2 mb-2">
-            <v-btn 
-              size="small" 
+          <div
+            class="d-flex ga-5 flex-wrap align-center justify-space-between ga-2 mb-2"
+          >
+            <v-btn
+              size="small"
               class="bg-green width-100"
               text="Выполнить"
               @click.stop
@@ -35,7 +38,7 @@
             </v-btn>
             <v-btn
               variant="tonal"
-              size="small" 
+              size="small"
               class="text-warning elevation-3 width-100"
               prepend-icon="mdi-pencil"
               text="Изменить"
@@ -44,7 +47,7 @@
           </div>
           <v-tooltip text="Удалить">
             <template v-slot:activator="{ props }">
-              <v-btn 
+              <v-btn
                 v-bind="props"
                 variant="text"
                 class="bg-background-light text-error elevation-0"
@@ -52,7 +55,7 @@
                 @click.stop
               />
             </template>
-          </v-tooltip>    
+          </v-tooltip>
         </div>
       </div>
     </v-card>
@@ -62,49 +65,55 @@
       max-width="800"
     >
       <v-sheet class="bg-background-dark">
-        <p class="px-8 py-3 bg-background-dark text-grey text-center">Описание задачи</p>
+        <p class="px-8 py-3 bg-background-dark text-grey text-center">
+          Описание задачи
+        </p>
         <v-divider />
         <div class="d-flex rounded-lg elevation-10 bg-background-dark">
           <v-sheet class="bg-background-dark px-8 py-5 w-60">
             <p class="mb-2 text-secondary text-h6">{{ task.title }}</p>
-            <p class=" text-body-1 text-justify">{{ task.description }}</p> 
+            <p class="text-body-1 text-justify">{{ task.description }}</p>
           </v-sheet>
           <v-sheet class="ga-2 bg-background-light pa-5 w-40">
             <div class="text-grey text-center mb-3">
               <div>
                 <p class="mb-1">Категория</p>
-                <v-chip 
+                <v-chip
                   v-if="task.category"
                   class="elevation-1 mb-2"
                   variant="elevated"
-                  :color="getCategoryData(task.category, 'iconColor')" 
+                  :color="getCategoryData(task.category, 'iconColor')"
                 >
-                  {{ getCategoryData(task.category, 'title') }}
+                  {{ getCategoryData(task.category, "title") }}
                 </v-chip>
               </div>
-              <v-divider class="mb-4"/>
+              <v-divider class="mb-4" />
               <div>
                 <p class="mb-1">Приоритет</p>
-                <v-chip 
+                <v-chip
                   v-if="task.category"
                   class="elevation-1 mb-2"
                   variant="elevated"
-                  :color="getPriorityColor(task.priority, 'color')" 
+                  :color="getPriorityColor(task.priority, 'color')"
                 >
-                  {{ getPriorityColor(task.priority, 'title')  }}
+                  {{ getPriorityColor(task.priority, "title") }}
                 </v-chip>
               </div>
-              <v-divider class="mb-4"/>
+              <v-divider class="mb-4" />
               <div>
                 <p class="mb-1">Избранное</p>
                 <v-btn
                   variant="flat"
                   size="small"
                   class="bg-primary rounded-xl text-body-1 elevation-5"
-                  :text="task.isTaskInFavorites ? 'Удалить': 'Добавить'"
+                  :text="task.isTaskInFavorites ? 'Удалить' : 'Добавить'"
                 >
                   <template v-slot:prepend>
-                    <v-icon :icon="task.isTaskInFavorites ? 'mdi-close-thick': 'mdi-plus'"/>
+                    <v-icon
+                      :icon="
+                        task.isTaskInFavorites ? 'mdi-close-thick' : 'mdi-plus'
+                      "
+                    />
                   </template>
                 </v-btn>
               </div>
@@ -118,7 +127,7 @@
 
 <script setup>
 import { useFormatDate } from '@/composables/useFormatDate';
-import { useMenuStore } from '@/stores/MenuStore';
+import { useTaskConfigStore } from '@/stores/TaskConfigStore';
 import { ref } from 'vue';
 
 const props = defineProps({
@@ -128,21 +137,25 @@ const props = defineProps({
   },
 });
 
-const MenuStore = useMenuStore()
+const TaskConfigStore = useTaskConfigStore();
 
-const { formatDate } = useFormatDate()
+const { formatDate } = useFormatDate();
 
 function getCategoryData(categoryTask, parameter) {
-  const category = MenuStore.categories.find((category) => categoryTask === category.value);
+  const category = TaskConfigStore.categories.find(
+    (category) => categoryTask === category.value,
+  );
   return category ? category[parameter] : null;
 }
 
 function getPriorityColor(priorityTask, parameter) {
-  const priority = MenuStore.priorities.find((priority) => priorityTask === priority.value);
+  const priority = TaskConfigStore.priorities.find(
+    (priority) => priorityTask === priority.value,
+  );
   return priority ? priority[parameter] : null;
 }
 
-const isDialogDetailsOpen = ref(false)
+const isDialogDetailsOpen = ref(false);
 </script>
 
 <style scoped>
@@ -176,7 +189,7 @@ const isDialogDetailsOpen = ref(false)
     flex-direction: column !important;
   }
 
-  .width-100{
+  .width-100 {
     width: 100%;
   }
 }
