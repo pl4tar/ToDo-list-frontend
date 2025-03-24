@@ -1,12 +1,15 @@
 <template>
-  <v-card-text class="mt-12">
-    <h3 class="text-center">Зарегистрируйте аккаунт</h3>
-    <v-row
-      align="center"
-      justify="center">
+  <v-card-text class="mt-4">
+    <v-row justify="center">
       <v-col
         cols="12"
-        sm="8">
+        class="text-center">
+        <h3>Зарегистрируйте аккаунт</h3>
+      </v-col>
+
+      <v-col
+        cols="12"
+        md="8">
         <v-row>
           <v-col
             cols="12"
@@ -17,9 +20,9 @@
               dense
               color="blue"
               autocomplete="false"
-              class="mt-4"
             />
           </v-col>
+
           <v-col
             cols="12"
             sm="6">
@@ -29,44 +32,54 @@
               dense
               color="blue"
               autocomplete="false"
-              class="mt-4"
+            />
+          </v-col>
+
+          <v-col cols="12">
+            <v-text-field
+              label="Почта"
+              outlined
+              dense
+              color="blue"
+              autocomplete="false"
+            />
+          </v-col>
+
+          <v-col cols="12">
+            <v-text-field
+              label="Пароль"
+              outlined
+              dense
+              color="blue"
+              autocomplete="false"
+              type="password"
+            />
+          </v-col>
+
+          <v-col cols="12">
+            <v-btn
+              color="blue"
+              dark
+              block
+              tile
+            >
+              Регистрация
+            </v-btn>
+          </v-col>
+
+          <v-col
+            cols="12"
+            class="text-center">
+            <h6 class="text-grey my-4">Или зарегистрируйтесь, используя:</h6>
+            <v-btn
+              depressed
+              outlined
+              size="small"
+              color="grey"
+              icon="mdi-google"
             />
           </v-col>
         </v-row>
-        <v-text-field
-          label="Почта"
-          outlined
-          dense
-          color="blue"
-          autocomplete="false"
-        />
-        <v-text-field
-          label="Пароль"
-          outlined
-          dense
-          color="blue"
-          autocomplete="false"
-          type="password"
-        />
-        <v-row>
-          <v-col
-            cols="12"
-            sm="7"></v-col>
-        </v-row>
-        <v-btn
-          color="blue"
-          dark
-          block
-          tile>Регистрация</v-btn>
-
-        <h6 class="text-center grey--text mt-4 mb-3">Или зарегистрируйтесь, используя:</h6>
-        <div class="d-flex justify-center align-center mx-10 mb-11">
-          <v-btn
-            depressed
-            outlined
-            color="grey"
-            icon="mdi-alpha-g-circle-outline"></v-btn>
-        </div>
       </v-col>
     </v-row>
   </v-card-text>
