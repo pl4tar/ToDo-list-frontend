@@ -16,31 +16,31 @@
     </template>
     <v-card class="pa-4 pb-10 rounded-lg addDialog bg-background-light">
       <v-text-field
-        prepend-icon=""
         label="Название"
         clearable
         variant="underlined"
-        v-model="titleTask"
+        v-model="TaskStore.titleTask"
       >
         <template v-slot:prepend>
           <v-icon
             icon="mdi-plus"
-            color="primary" />
+            color="primary" 
+          />
         </template>
       </v-text-field>
       <v-textarea
         label="Описание"
         clearable
-        v-model="descriptionTask" />
+        v-model="TaskStore.descriptionTask" />
       <v-switch
         inset
         class="d-flex mb-2 align-center justify-center"
         color="primary"
-        v-model="isTaskInFavorites"
+        v-model="TaskStore.isTaskInFavorites"
       >
         <template v-slot:append>
           <span class="text-primary font-weight-bold">
-            {{ isTaskInFavorites ? "В избранном" : "Добавить в избранное" }}
+            {{ TaskStore.isTaskInFavorites ? "В избранном" : "Добавить в избранное" }}
           </span>
         </template>
       </v-switch>   
@@ -49,14 +49,14 @@
         label="Категория"
         chips
         :items="filteredCategories"
-        v-model="selectedCategory"
+        v-model="TaskStore.selectedCategory"
       />
       <div class="d-flex flex-column ga-1 mb-5 align-center">
         <p class="text-primary font-weight-bold">Укажите приоритет</p>
         <v-chip-group
           filter
           selected-class="elevation-7 font-weight-bold"
-          v-model="selectedPriority"
+          v-model="TaskStore.selectedPriority"
         >
           <v-chip
             v-for="priority in TaskConfigStore.priorities"
@@ -129,7 +129,7 @@
           color="primary"
           text="Готово"
           class="elevation-5 w-50"
-          @click="addTaskHandler"
+          @click="TaskStore.addNewTask()"
         >
           <template v-slot:prepend>
             <v-icon icon="mdi-check" />
@@ -141,15 +141,12 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import { useTaskConfigStore } from '@/stores/TaskConfigStore';
 import { useTaskStore } from '@/stores/TaskStore';
 import DatePicker from '@/components/DatePicker.vue';
 import { useFormatDate } from '@/composables/useFormatDate';
-import { useWarningStore } from '@/stores/WarningStore';
 import { useMenuStore } from '@/stores/MenuStore';
-
-const WarningStore = useWarningStore();
 
 const TaskConfigStore = useTaskConfigStore();
 const MenuStore = useMenuStore()
@@ -163,21 +160,6 @@ const filteredCategories = computed(() =>
   ),
 );
 
-const titleTask = ref();
-const descriptionTask = ref();
-const isTaskInFavorites = ref(false);
-const selectedCategory = ref();
-const selectedPriority = ref();
-
-const addTaskHandler = () => {
-  if (!titleTask.value || !descriptionTask.value) {
-    WarningStore.showWarning('Введите корректные название и описание задачи');
-  }
-  else {
-    TaskStore.addNewTask()
-  }
-}
-
 const handleDateSave = (date) => {
   if (TaskStore.selectedDateType === 'start') {
     TaskStore.startDate = date;
@@ -187,6 +169,7 @@ const handleDateSave = (date) => {
   TaskStore.isDialogDateOpen = false;
   TaskStore.currentDate = null;
 };
+
 </script>
 
 <style lang="scss" scoped>

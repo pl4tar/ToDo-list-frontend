@@ -12,8 +12,7 @@
 </template>
 
 <script setup>
-import AppNavigation from '@/components/AppNavigation.vue';
+import AppNavigation from '@/components/navigation/AppNavigation.vue';
 import ToggleThemeBtn from '@/components/buttons/ToggleThemeBtn.vue';
 import MenuBtn from '@/components/buttons/MenuBtn.vue';
-
 </script>

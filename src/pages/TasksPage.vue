@@ -1,8 +1,6 @@
 <template>
   <div>
-    <div
-      class="d-flex flex-wrap flex-column flex-sm-row align-center justify-space-between pa-2"
-    >
+    <div class="d-flex flex-wrap flex-column flex-sm-row align-center justify-space-between pa-2">
       <div>
         <h1 class="mb-1">{{ pageTitle }}</h1>
         <div class="d-flex ga-2 mb-3 text-secondary">
@@ -10,7 +8,7 @@
           <p>Всего <span>100</span> задач</p>
         </div>
       </div>
-      <TaskDialog />
+      <AddTaskDialog />
       <v-divider />
     </div>
     <v-responsive class="mx-auto mt-4 mb-7">
@@ -44,7 +42,7 @@
         :key="task.id"
         cols="12"
         md="6">
-        <TaskCard :task="task" />
+        <TaskItem :task="task" />
       </v-col>
       <v-col
         v-if="!tasks.length && route.params.filter !== 'expired'"
@@ -63,7 +61,7 @@
         :key="task.id"
         cols="12"
         md="6">
-        <TaskCard :task="task" />
+        <TaskItem :task="task" />
       </v-col>
       <v-col
         v-if="!expiredTasks.length && route.params.filter === 'expired'"
@@ -83,8 +81,8 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { useRoute } from 'vue-router';
-import TaskCard from '@/components/TaskCard.vue';
-import TaskDialog from '@/components/TaskDialog.vue';
+import TaskItem from '@/components/task/TaskItem.vue';
+import AddTaskDialog from '@/components/task/AddTaskDialog.vue';
 import { useAllTasksStore } from '@/stores/AllTasksStore';
 
 const route = useRoute();
