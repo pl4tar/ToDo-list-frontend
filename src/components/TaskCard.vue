@@ -148,6 +148,7 @@ import { useFormatDate } from '@/composables/useFormatDate';
 import { useTaskConfigStore } from '@/stores/TaskConfigStore';
 import { ref } from 'vue';
 import {useTaskStore} from '@/stores/TaskStore.js'
+import { useMenuStore } from '@/stores/MenuStore';
 
 const props = defineProps({
   task: {
@@ -157,12 +158,13 @@ const props = defineProps({
 });
 
 const TaskStore = useTaskStore()
+const MenuStore = useMenuStore()
 const TaskConfigStore = useTaskConfigStore();
 
 const { formatDate } = useFormatDate();
 
 function getCategoryData(categoryTask, parameter) {
-  const category = TaskConfigStore.categories.find(
+  const category = MenuStore.categories.find(
     (category) => categoryTask === category.value,
   );
   return category ? category[parameter] : null;

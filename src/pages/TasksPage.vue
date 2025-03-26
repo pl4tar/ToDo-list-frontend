@@ -28,6 +28,7 @@
         <v-select
           item-color="primary"
           v-model="filtrationValue"
+          clearable
           :items="filtrationValues"
           variant="solo-filled"
           bg-color="background-dark"

@@ -7,5 +7,8 @@ import '@/styles/main.css';
 
 const app = createApp(App);
 
-app.use(createPinia()).use(vuetify).use(router);
-app.mount('#app');
+app
+  .use(createPinia())
+  .use(vuetify)
+  .use(router)
+  .mount('#app');

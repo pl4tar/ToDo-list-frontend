@@ -147,21 +147,22 @@ import { useTaskStore } from '@/stores/TaskStore';
 import DatePicker from '@/components/DatePicker.vue';
 import { useFormatDate } from '@/composables/useFormatDate';
 import { useWarningStore } from '@/stores/WarningStore';
+import { useMenuStore } from '@/stores/MenuStore';
 
 const WarningStore = useWarningStore();
 
 const TaskConfigStore = useTaskConfigStore();
-
+const MenuStore = useMenuStore()
 const TaskStore = useTaskStore();
+
 const { formatDate } = useFormatDate();
 
 const filteredCategories = computed(() =>
-  TaskConfigStore.categories.filter(
+  MenuStore.categories.filter(
     (category) => category.value !== 'all' && category.value !== 'newCategory',
   ),
 );
 
-// данные задачи
 const titleTask = ref();
 const descriptionTask = ref();
 const isTaskInFavorites = ref(false);
