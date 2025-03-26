@@ -7,11 +7,28 @@ export const useTaskStore = defineStore('taskStore', {
     isDialogDateOpen: false,
     selectedDateType: null,
     currentDate: null,
+
     startDate: null,
     endDate: null,
+    titleTask: null,
+    descriptionTask: null,
+    isTaskInFavorites: false,
+    selectedCategory: null,
+    selectedPriority: null,
   }),
 
   actions: {
+    // диалог для выбора дат
+    openDialogDate(type) {
+      this.isDialogDateOpen = true;
+      this.selectedDateType = type;
+      this.currentDate = type === 'start' ? this.startDate : this.endDate;
+    },
+    closeDialogDate() {
+      this.isDialogDateOpen = false;
+    },
+
+    // диалоги добавления задачи
     closeDialog() {
       this.isDialogShown = false;
     },
@@ -19,7 +36,6 @@ export const useTaskStore = defineStore('taskStore', {
     addNewTask() {
       this.isDialogShown = false;
       // логика добавления ...
-
       confetti({
         particleCount: 100,
         spread: 250,
@@ -30,15 +46,9 @@ export const useTaskStore = defineStore('taskStore', {
       });
     },
 
-    // диалог для выбора дат
-    closeDialogDate() {
-      this.isDialogDateOpen = false;
-    },
-
-    openDialogDate(type) {
-      this.isDialogDateOpen = true;
-      this.selectedDateType = type;
-      this.currentDate = type === 'start' ? this.startDate : this.endDate;
+    deleteTask(taskId) {
+      // логика удаления ...
+      console.log('удалено');
     },
   },
 });

@@ -43,12 +43,11 @@
             {{ isTaskInFavorites ? "В избранном" : "Добавить в избранное" }}
           </span>
         </template>
-      </v-switch>
-      <v-combobox
-        color="background-dark"
-        chips
-        hide-selected
+      </v-switch>   
+      <v-select
         class="mb-2"
+        label="Категория"
+        chips
         :items="filteredCategories"
         v-model="selectedCategory"
       />
@@ -118,9 +117,7 @@
           />
         </div>
       </v-sheet>
-      <div
-        class="d-flex flex-column ga-5 justify-center align-center dialog_btn_wrapper"
-      >
+      <div class="d-flex flex-column ga-5 justify-center align-center dialog_btn_wrapper">
         <v-btn
           color="primary"
           text="Закрыть"
@@ -132,14 +129,14 @@
           color="primary"
           text="Готово"
           class="elevation-5 w-50"
-          @click="TaskStore.addNewTask()"
+          @click="addTaskHandler"
         >
           <template v-slot:prepend>
             <v-icon icon="mdi-check" />
           </template>
         </v-btn>
       </div>
-    </v-card>
+    </v-card> 
   </v-dialog>
 </template>
 
@@ -149,6 +146,9 @@ import { useTaskConfigStore } from '@/stores/TaskConfigStore';
 import { useTaskStore } from '@/stores/TaskStore';
 import DatePicker from '@/components/DatePicker.vue';
 import { useFormatDate } from '@/composables/useFormatDate';
+import { useWarningStore } from '@/stores/WarningStore';
+
+const WarningStore = useWarningStore();
 
 const TaskConfigStore = useTaskConfigStore();
 
@@ -165,8 +165,17 @@ const filteredCategories = computed(() =>
 const titleTask = ref();
 const descriptionTask = ref();
 const isTaskInFavorites = ref(false);
-const selectedCategory = ref('Выберите категорию');
+const selectedCategory = ref();
 const selectedPriority = ref();
+
+const addTaskHandler = () => {
+  if (!titleTask.value || !descriptionTask.value) {
+    WarningStore.showWarning('Введите корректные название и описание задачи');
+  }
+  else {
+    TaskStore.addNewTask()
+  }
+}
 
 const handleDateSave = (date) => {
   if (TaskStore.selectedDateType === 'start') {

@@ -45,17 +45,39 @@
               @click.stop
             />
           </div>
-          <v-tooltip text="Удалить">
-            <template v-slot:activator="{ props }">
-              <v-btn
-                v-bind="props"
-                variant="text"
-                class="bg-background-light text-error elevation-0"
-                icon="mdi-delete-empty"
-                @click.stop
-              />
-            </template>
-          </v-tooltip>
+          <v-btn
+            variant="text"
+            class="bg-background-light text-error elevation-0"
+            icon="mdi-delete-empty"
+            @click.stop="isDialogForDeletionOpen = true"
+          />   
+          <v-dialog
+            v-model="isDialogForDeletionOpen"
+            width="auto"
+          >
+            <v-card
+              min-width="400"
+              class="bg-background-light pa-4 elevation-10 rounded-lg"
+            >
+              <v-card-title class="mb-3 text-center">Удалить задачу?</v-card-title>
+              <v-card-actions class="d-flex flex-wrap justify-space-around">                 
+                <v-btn
+                  variant="flat"
+                  text="Закрыть"
+                  class="px-3"
+                  color="warning"
+                  @click="isDialogForDeletionOpen = false"
+                />
+                <v-btn
+                  color="error"
+                  text="Удалить"
+                  variant="flat"
+                  class="px-3"
+                  @click="deleteTask"
+                />                                                
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
         </div>
       </div>
     </v-card>
@@ -125,6 +147,7 @@
 import { useFormatDate } from '@/composables/useFormatDate';
 import { useTaskConfigStore } from '@/stores/TaskConfigStore';
 import { ref } from 'vue';
+import {useTaskStore} from '@/stores/TaskStore.js'
 
 const props = defineProps({
   task: {
@@ -133,6 +156,7 @@ const props = defineProps({
   },
 });
 
+const TaskStore = useTaskStore()
 const TaskConfigStore = useTaskConfigStore();
 
 const { formatDate } = useFormatDate();
@@ -152,6 +176,16 @@ function getPriorityColor(priorityTask, parameter) {
 }
 
 const isDialogDetailsOpen = ref(false);
+
+const isDialogForDeletionOpen = ref(false)
+const isConfirmForDeletion = ref(false)
+
+function deleteTask() {
+  isConfirmForDeletion.value = true
+  TaskStore.deleteTask(props.task.id)
+  isConfirmForDeletion.value = false
+  isDialogForDeletionOpen.value = false
+}
 </script>
 
 <style scoped>
