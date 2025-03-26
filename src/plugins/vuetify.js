@@ -9,21 +9,22 @@ import { VCalendar } from 'vuetify/labs/VCalendar';
 const darkTheme = {
   colors: {
     primary: '#6c80e7',
-    background: '#6b6b6b',
+    secondary: '#9FA8DA',
+    background: '#282828',
     'background-light': '#464646',
-    'background-dark': '#393939',
+    'background-dark': '#3a3a3a',
     warning: '#FB8C00',
   },
 };
 
 const lightTheme = {
   colors: {
-    // // background: '#f0f0f0',
-    // 'background-light': '#464646',
-    // primary: '#6c80e7',
-    // 'background-dark': '#393939',
-    // 'background-primary': 'rgb(240, 240, 240)',
-    // secondary: '#b146cf',
+    background: '#ebebeb',
+    'background-light': '#e2e2e2',
+    primary: '#4b50bf',
+    'background-dark': '#dadada',
+    'background-primary': 'rgb(240, 240, 240)',
+    secondary: '#6f54c2',
   },
 };
 

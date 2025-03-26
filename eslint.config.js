@@ -1,19 +1,19 @@
-import js from '@eslint/js';
-import vue from 'eslint-plugin-vue';
-import globals from 'globals';
-import vueEslintParser from 'vue-eslint-parser';
+import js from "@eslint/js";
+import vue from "eslint-plugin-vue";
+import globals from "globals";
+import vueEslintParser from "vue-eslint-parser";
 
 export default [
   js.configs.recommended,
   {
-    files: ['**/*.js', '**/*.vue'],
+    files: ["**/*.js", "**/*.vue"],
     languageOptions: {
       ecmaVersion: 2021,
-      sourceType: 'module',
+      sourceType: "module",
       globals: {
         ...globals.browser,
-        defineProps: 'readonly',
-        defineEmits: 'readonly',
+        defineProps: "readonly",
+        defineEmits: "readonly",
       },
       parser: vueEslintParser,
     },
@@ -22,20 +22,20 @@ export default [
     },
 
     rules: {
-      quotes: [2, 'single'],
-      'no-unused-vars': 'off',
-      'sort-vars': 'off',
-      'one-var': 'off',
-      'no-eval': 'warn',
-      'vue/html-indent': 2,
-      'vue/valid-v-slot': [
-        'error',
+      quotes: [2, "single"],
+      "no-unused-vars": "off",
+      "sort-vars": "off",
+      "one-var": "off",
+      "no-eval": "warn",
+      "vue/html-indent": 2,
+      "vue/valid-v-slot": [
+        "error",
         {
           allowModifiers: true,
         },
       ],
-      'vue/max-attributes-per-line': [
-        'error',
+      "vue/max-attributes-per-line": [
+        "error",
         {
           singleline: {
             max: 1,
@@ -45,35 +45,35 @@ export default [
           },
         },
       ],
-      'vue/first-attribute-linebreak': [
-        'error',
+      "vue/first-attribute-linebreak": [
+        "error",
         {
-          singleline: 'ignore',
-          multiline: 'below',
+          singleline: "ignore",
+          multiline: "below",
         },
       ],
-      'no-empty': [
-        'error',
+      "no-empty": [
+        "error",
         {
           allowEmptyCatch: true,
         },
       ],
-      'no-fallthrough': 'off',
-      'space-before-function-paren': [
-        'error',
+      "no-fallthrough": "off",
+      "space-before-function-paren": [
+        "error",
         {
-          named: 'never',
-          anonymous: 'always',
-          asyncArrow: 'always',
+          named: "never",
+          anonymous: "always",
+          asyncArrow: "always",
         },
       ],
-      'space-in-parens': ['error', 'never'],
-      curly: 'error',
-      'keyword-spacing': 'error',
-      'vue/no-mutating-props': 'warn',
-      'vue/component-definition-name-casing': 'off',
-      'vue/no-unused-components': 'warn',
-      'vue/require-prop-types': 'error',
+      "space-in-parens": ["error", "never"],
+      curly: "error",
+      "keyword-spacing": "error",
+      "vue/no-mutating-props": "warn",
+      "vue/component-definition-name-casing": "off",
+      "vue/no-unused-components": "warn",
+      "vue/require-prop-types": "error",
     },
   },
 ];
