@@ -12,11 +12,13 @@
     "lint:fix": "npx eslint src --ext .vue,.js --fix --debug"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@mdi/font": "^7.4.47",
     "@mdi/js": "^7.4.47",
     "@popperjs/core": "^2.11.8",
     "@vueuse/core": "^13.0.0",
     "canvas-confetti": "^1.9.3",
+    "emailjs": "^4.0.3",
     "firebase": "^11.4.0",
     "pinia": "^3.0.1",
     "sass": "^1.86.0",
