@@ -3,7 +3,7 @@
     size="x-large"
     icon="mdi-theme-light-dark"
     variant="plain"
-    class="elevation-0 position-absolute right-0 top-0 mt-5 mr-5 cursor-pointer"
+    class="elevation-0 cursor-pointer"
     @click="toggleTheme"
   />
 </template>
