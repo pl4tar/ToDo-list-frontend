@@ -5,12 +5,12 @@
       justify="center">
       <v-col
         cols="12"
-        sm="10"
-      >
+        sm="10">
         <v-card
           class="elevation-6 mt-10"
           color="#696969">
           <v-window v-model="step">
+            <!-- Вход -->
             <v-window-item :value="1">
               <v-row>
                 <v-col
@@ -22,45 +22,29 @@
                   cols="12"
                   md="6"
                   class="bg-light-blue-darken-2 rounded-bl-xl">
-                  <div style="text-align: center; padding: 180px 0;">
-                    <v-card-text class="white--text">
-                      <h3 class="text-center">Нет аккаунта?</h3>
-                      <h5 class="text-center">
-                        Давайте все подготовим чтобы вы могли успешно пользоваться <br />данным сервисом
-                      </h5>
-                    </v-card-text>
-                    <div class="text-center">
-                      <v-btn
-                        tile
-                        outlined
-                        color="warning"
-                        @click="step++">Регистрация</v-btn>
-                    </div>
-                  </div>
+                  <PromoBlock
+                    title="Нет аккаунта?"
+                    description="Давайте все подготовим чтобы вы могли успешно пользоваться данным сервисом"
+                    button-text="Регистрация"
+                    @button-click="step++"
+                  />
                 </v-col>
               </v-row>
             </v-window-item>
+
+            <!-- Регистрация -->
             <v-window-item :value="2">
               <v-row>
                 <v-col
                   cols="12"
                   md="6"
                   class="bg-light-blue-darken-2 rounded-br-xl">
-                  <div style="text-align: center; padding: 180px 0;">
-                    <v-card-text class="white--text">
-                      <h3 class="text-center">Уже зарегистрировались?</h3>
-                      <h5 class="text-center">
-                        Войдите в свой аккаунт и наслаждайтесь ToDo-List
-                      </h5>
-                    </v-card-text>
-                    <div class="text-center">
-                      <v-btn
-                        tile
-                        outlined
-                        color="warning"
-                        @click="step--">Войти</v-btn>
-                    </div>
-                  </div>
+                  <PromoBlock
+                    title="Уже зарегистрировались?"
+                    description="Войдите в свой аккаунт и наслаждайтесь ToDo-List"
+                    button-text="Войти"
+                    @button-click="step--"
+                  />
                 </v-col>
                 <v-col
                   cols="12"
@@ -78,9 +62,9 @@
 
 <script setup>
 import { ref } from 'vue';
-import RegistrationForm from '@/components/RegistrationForm.vue';
 import LoginForm from '@/components/LoginForm.vue';
-
+import RegistrationForm from '@/components/RegistrationForm.vue';
+import PromoBlock from '@/components/PromoBlock.vue';
 
 const step = ref(1);
 </script>
@@ -93,8 +77,9 @@ const step = ref(1);
   border-bottom-right-radius: 300px !important;
 }
 @media (max-width: 960px) {
-  .rounded-bl-xl, .rounded-br-xl {
-    border-radius: 0 !important; /* убрал закругления на мобилках */
+  .rounded-bl-xl,
+  .rounded-br-xl {
+    border-radius: 0 !important;
   }
 }
 </style>

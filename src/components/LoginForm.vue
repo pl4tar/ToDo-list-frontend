@@ -1,11 +1,11 @@
 <template>
-  <v-card-text class="mt-4">
+  <v-card-text class="py-8">
     <v-row justify="center">
       <v-col
         cols="12"
         class="text-center">
         <h3>Войдите в свой аккаунт</h3>
-        <h5 class="text-grey">
+        <h5 class="text-grey mt-2">
           Войдите в свой аккаунт чтобы пользоваться всеми возможностями ToDo-List
         </h5>
       </v-col>
@@ -13,42 +13,37 @@
       <v-col
         cols="12"
         md="8">
-        <v-row>
-          <v-col cols="12">
-            <v-text-field
-              label="Почта"
-              outlined
-              dense
-              color="blue"
-              autocomplete="false"
-            />
-          </v-col>
+        <v-form>
+          <v-text-field
+            label="Почта"
+            outlined
+            dense
+            color="blue"
+            class="mb-4"
+          />
 
-          <v-col cols="12">
-            <v-text-field
-              label="Пароль"
-              outlined
-              dense
-              color="blue"
-              autocomplete="false"
-              type="password"
-            />
-          </v-col>
+          <v-text-field
+            label="Пароль"
+            outlined
+            dense
+            color="blue"
+            autocomplete="current-password"
+            type="password"
+            class="mb-4"
+          />
 
-          <v-col cols="12">
-            <v-btn
-              color="blue"
-              dark
-              block
-              tile
-            >
-              Войти
-            </v-btn>
-          </v-col>
+          <v-btn
+            color="blue"
+            dark
+            block
+            tile
+            type="submit"
+            class="mb-4"
+          >
+            Войти
+          </v-btn>
 
-          <v-col
-            cols="12"
-            class="text-center">
+          <div class="text-center">
             <h6 class="my-4 text-grey">Или войдите через:</h6>
             <v-btn
               depressed
@@ -57,8 +52,8 @@
               size="small"
               icon="mdi-google"
             />
-          </v-col>
-        </v-row>
+          </div>
+        </v-form>
       </v-col>
     </v-row>
   </v-card-text>

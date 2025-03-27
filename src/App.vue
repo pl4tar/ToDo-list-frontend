@@ -2,9 +2,8 @@
   <v-app>
     <RegistrationPage/>
   </v-app>
-
 </template>
 
 <script setup>
-import RegistrationPage from '@/components/pages/RegistrationPage.vue';
+import RegistrationPage from '@/pages/RegistrationPage.vue';
 </script>
