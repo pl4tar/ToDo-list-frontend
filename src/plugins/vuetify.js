@@ -46,7 +46,7 @@ const vuetify = createVuetify({
   },
   defaults: {
     VContainer: {
-      style: [{ maxWidth: '1400px' }],
+      style: [{ maxWidth: '1100px' }],
     },
   },
 });
