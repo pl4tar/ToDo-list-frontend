@@ -6,8 +6,8 @@
           <v-icon icon="mdi-account-circle"/>
         </v-avatar>
         <div class="">
-          <v-card-title class="mb-0">Murzik</v-card-title>
-          <v-card-subtitle>murzik@gmail.com</v-card-subtitle>
+          <v-card-title class="mb-0">{{AuthStore.user?.displayName}}</v-card-title>
+          <v-card-subtitle>{{ AuthStore.user?.email }}</v-card-subtitle>
         </div>
       </div>
       <v-tooltip text="Выход">
@@ -16,9 +16,23 @@
             v-bind="props"
             icon="mdi-logout"
             color="background-light"
+            @click="logoutHandler"
           />
         </template>
       </v-tooltip>
     </v-card>
   </v-sheet>
 </template>
+
+<script setup>
+import { useAuthStore } from '@/stores/firebase/AuthStore';
+import { useRouter } from 'vue-router';
+
+const AuthStore = useAuthStore()
+const router = useRouter()
+
+async function logoutHandler() {
+  AuthStore.logout()
+  router.push('/auth')
+}
+</script>

@@ -1,5 +1,6 @@
 <template>
   <v-navigation-drawer
+    v-if="route.path !== '/auth'"
     v-model="MenuStore.isNavShown"
     class="pa-3 bg-background-dark fixed-nav"
     width="350"
@@ -29,6 +30,8 @@ import { useMenuStore } from '@/stores/MenuStore';
 import AppLogo from '@/components/navigation/AppLogo.vue';
 import UserProfile from '@/components/navigation/UserProfile.vue';
 import CategoriesSection from '@/components/navigation/CategoriesSection.vue';
+import { useRoute } from 'vue-router';
 
+const route = useRoute()
 const MenuStore = useMenuStore()
 </script>

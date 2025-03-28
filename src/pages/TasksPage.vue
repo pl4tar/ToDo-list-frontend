@@ -86,6 +86,7 @@ import AddTaskDialog from '@/components/task/AddTaskDialog.vue';
 import { useAllTasksStore } from '@/stores/AllTasksStore';
 
 const route = useRoute();
+
 const AllTasksStore = useAllTasksStore();
 
 const pageTitle = computed(() => {
@@ -236,11 +237,7 @@ onMounted(() => {
 
   onUnmounted(() => clearInterval(interval));
 });
+
+
 </script>
 
-<style scoped>
-/* .themeBtn {
-  position: absolute;
-  right: 10px;
-} */
-</style>

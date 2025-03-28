@@ -35,7 +35,7 @@ export const useMenuStore = defineStore('menuStore', {
         value: 'all',
         icon: 'mdi-view-list',
         iconColor: 'grey',
-        path: '/',
+        path: '/tasks/all',
       },
       {
         id: 2,

@@ -7,15 +7,17 @@
         <h3>Зарегистрируйте аккаунт</h3>
       </v-col>
 
-      <v-col
+      <v-col 
+        class="pa-0"
         cols="12"
         md="8">
-        <v-form>
+        <v-form @submit.prevent="handleRegister">
           <v-row>
             <v-col
               cols="12"
               sm="6">
               <v-text-field
+                v-model="firstName"
                 label="Имя"
                 outlined
                 dense
@@ -28,6 +30,7 @@
               cols="12"
               sm="6">
               <v-text-field
+                v-model="lastName"
                 label="Фамилия"
                 outlined
                 dense
@@ -38,6 +41,8 @@
           </v-row>
 
           <v-text-field
+            v-model="email"
+            type="email"
             label="Почта"
             outlined
             dense
@@ -46,9 +51,11 @@
           />
 
           <v-text-field
+            v-model="password"
             label="Пароль"
             outlined
             dense
+            type="password"
             color="blue"
             autocomplete="new-password"
             class="mb-4"
@@ -63,6 +70,12 @@
           >
             Регистрация
           </v-btn>
+          <p 
+            v-if="AuthStore.error"
+            class="text-center text-error text-body-1"
+          >
+            {{ AuthStore.getErrorMessage(AuthStore.error)}}
+          </p>
           <div class="text-center">
             <h6 class="text-grey my-4">Или зарегистрируйтесь, используя:</h6>
             <v-btn
@@ -80,7 +93,23 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
+import { useAuthStore } from '@/stores/firebase/AuthStore'
 
+const AuthStore = useAuthStore()
+
+const email = ref(null)
+const password = ref(null)
+const firstName = ref('');
+const lastName = ref('');
+
+async function handleRegister() {
+  try {
+    await AuthStore.register(email.value, password.value, firstName.value, lastName.value)
+  } catch (err) {
+    console.error(err.code)
+  }
+}
 </script>
 
 <style scoped>
