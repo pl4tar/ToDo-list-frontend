@@ -140,7 +140,7 @@ export const useAuthStore = defineStore('authStore', {
         'auth/user-not-found': 'Пользователь не найден',
         'auth/weak-password': 'Пароль должен содержать не менее 6 символов',
         'auth/wrong-password': 'Неверный пароль',
-        'email-not-verified': 'Ваш email не подтвержден'
+        'email-not-verified': 'Ваш email не подтвержден. Перейдите по ссылке в письме, для подтверждения.'
       };
       return messages[code] || 'Ошибка, попробуйте еще раз';
     },
