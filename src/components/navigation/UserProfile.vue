@@ -16,20 +16,28 @@
             v-bind="props"
             icon="mdi-logout"
             color="background-light"
-            @click="logoutHandler"
+            @click="isLogoutDialogOpen=true"
           />
         </template>
       </v-tooltip>
+      <LogoutDialog 
+        v-model="isLogoutDialogOpen" 
+        @confirm="logoutHandler"
+      />
     </v-card>
   </v-sheet>
 </template>
 
 <script setup>
+import { ref } from 'vue';
 import { useAuthStore } from '@/stores/firebase/AuthStore';
 import { useRouter } from 'vue-router';
+import LogoutDialog from '@/components/navigation/LogoutDialog.vue';
 
 const AuthStore = useAuthStore()
 const router = useRouter()
+
+const isLogoutDialogOpen  = ref(false)
 
 async function logoutHandler() {
   AuthStore.logout()

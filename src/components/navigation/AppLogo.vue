@@ -1,7 +1,7 @@
 <template>
   <div
     class="my-5 text-h4 d-flex justify-space-evenly align-center cursor-pointer"
-    @click="router.push('/tasks/all')"
+    @click="router.push('/')"
   >
     <v-icon
       color="primary"

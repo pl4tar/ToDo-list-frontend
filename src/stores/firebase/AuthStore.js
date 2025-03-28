@@ -23,6 +23,11 @@ export const useAuthStore = defineStore('authStore', {
 
       try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        
+        if (!userCredential.user.emailVerified) {
+          this.error = 'email-not-verified';
+          return false;
+        }
         this.setUser(userCredential.user);
         return true
       } catch (err) {
@@ -73,8 +78,7 @@ export const useAuthStore = defineStore('authStore', {
           emailVerified: false
         };
 
-        await sendEmailVerification(userCredential.user);
-
+        await sendEmailVerification(userCredential.user)
         this.setUser(newUser);
         return true
       } catch (err) {
@@ -136,6 +140,7 @@ export const useAuthStore = defineStore('authStore', {
         'auth/user-not-found': 'Пользователь не найден',
         'auth/weak-password': 'Пароль должен содержать не менее 6 символов',
         'auth/wrong-password': 'Неверный пароль',
+        'email-not-verified': 'Ваш email не подтвержден'
       };
       return messages[code] || 'Ошибка, попробуйте еще раз';
     },

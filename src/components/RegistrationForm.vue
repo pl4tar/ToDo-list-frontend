@@ -90,11 +90,17 @@
       </v-col>
     </v-row>
   </v-card-text>
+  <CommonDialog v-model="dialog">
+    На вашу почту была отправлена одноразовая ссылка. Перейдите по ней, чтобы подтвердить свой email. 
+    После этого вы сможете войти в свой аккаунт.
+    <span class="text-primary">Если письмо не пришло, проверьте папку "Спам"</span>
+  </CommonDialog>
 </template>
 
 <script setup>
 import { ref } from 'vue'
 import { useAuthStore } from '@/stores/firebase/AuthStore'
+import CommonDialog from '@/components/CommonDialog.vue';
 
 const AuthStore = useAuthStore()
 
@@ -103,15 +109,16 @@ const password = ref(null)
 const firstName = ref('');
 const lastName = ref('');
 
+const dialog = ref(false)
+
 async function handleRegister() {
   try {
-    await AuthStore.register(email.value, password.value, firstName.value, lastName.value)
+    const isRegistered = await AuthStore.register(email.value, password.value, firstName.value, lastName.value)
+    if (isRegistered) {
+      dialog.value = true
+    }
   } catch (err) {
     console.error(err.code)
   }
 }
 </script>
-
-<style scoped>
-
-</style>

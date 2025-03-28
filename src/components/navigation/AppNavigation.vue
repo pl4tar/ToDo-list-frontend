@@ -6,8 +6,9 @@
     width="350"
   >
     <div class="mb-5">
-      <div class="d-flex align-center justify-space-around">
+      <div class="d-flex align-center px-2">
         <AppLogo />
+        <v-spacer></v-spacer>
         <v-tooltip text="Закрыть меню">
           <template v-slot:activator="{ props }">
             <v-icon
