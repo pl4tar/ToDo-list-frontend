@@ -1,7 +1,19 @@
 <template>
   <v-container>
     <v-row justify="center">
-      <AppLogo/>
+      <AppLogo/>    
+    </v-row>
+    <v-row justify="center">    
+      <div class="text-container">
+        <span 
+          v-for="(char, index) in text" 
+          class="char font-weight-bold" 
+          :key="index" 
+          :style="{ animationDelay: `${index * 0.05}s` }"
+        >
+          {{ char }}
+        </span> 
+      </div>
     </v-row>
     <v-row
       align="center"
@@ -63,13 +75,15 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import LoginForm from '@/components/LoginForm.vue';
 import RegistrationForm from '@/components/RegistrationForm.vue';
 import PromoBlock from '@/components/PromoBlock.vue';
 import AppLogo from '@/components/navigation/AppLogo.vue'
 
 const step = ref(1);
+
+const text = ref('Планирование без сложностей');
 </script>
 
 <style scoped>
@@ -84,5 +98,31 @@ const step = ref(1);
   .rounded-br-xl {
     border-radius: 0 !important;
   }
+}
+
+.char {
+  display: inline-block;
+  opacity: 0;
+  animation: textAnim 1.8s forwards;
+  white-space: pre;
+}
+
+@keyframes textAnim {
+  from {
+    opacity: 0;
+    color:rgb(129, 14, 145);
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+    color: #6c80e7;
+  }
+}
+
+.text-container {
+  font-size: 1.5rem;
+  line-height: 1.6;
+  overflow: hidden;
 }
 </style>

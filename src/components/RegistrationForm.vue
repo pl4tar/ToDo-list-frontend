@@ -13,7 +13,7 @@
         md="8">
         <v-form @submit.prevent="handleRegister">
           <v-row>
-            <v-col 
+            <v-col
               cols="12"
               sm="6">
               <v-text-field
