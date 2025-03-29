@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { auth } from '@/firebase/firebaseConfig';
+import { auth, db } from '@/firebase/firebaseConfig';
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -10,6 +10,7 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from 'firebase/auth';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
 
 export const useAuthStore = defineStore('authStore', {
   state: () => ({
@@ -19,7 +20,7 @@ export const useAuthStore = defineStore('authStore', {
 
   actions: {
     async login(email, password) {
-      this.error = null
+      this.error = null;
 
       try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
@@ -28,11 +29,18 @@ export const useAuthStore = defineStore('authStore', {
           this.error = 'email-not-verified';
           return false;
         }
+        
+        const userDoc = await getDoc(doc(db, 'users', userCredential.user.uid));
+        if (!userDoc.exists()) {
+          this.error = 'user-not-in-database';
+          return false;
+        }
+        
         this.setUser(userCredential.user);
-        return true
+        return true;
       } catch (err) {
         this.error = err.code;
-        return false
+        return false;
       }
     },
 
@@ -42,11 +50,27 @@ export const useAuthStore = defineStore('authStore', {
       try {
         const provider = new GoogleAuthProvider();
         const userCredential = await signInWithPopup(auth, provider);
+        
+        await this.checkOrCreateUserInFirestore(userCredential.user);
+        
         this.setUser(userCredential.user);
-        return true
+        return true;
       } catch (err) {
-        this.handleAuthError(err);
-        return false
+        this.err = err.code;
+        return false;
+      }
+    },
+
+    async checkOrCreateUserInFirestore(firebaseUser) {
+      const userRef = doc(db, 'users', firebaseUser.uid);
+      const userDoc = await getDoc(userRef);
+      
+      if (!userDoc.exists()) {
+        await setDoc(userRef, {
+          uid: firebaseUser.uid,
+          email: firebaseUser.email,
+          displayName: firebaseUser.displayName,
+        });
       }
     },
 
@@ -54,7 +78,7 @@ export const useAuthStore = defineStore('authStore', {
       try {
         await signOut(auth);
         this.user = null;
-        this.clearUser()
+        this.clearUser();
       } catch (err) {
         this.error = err.code;
       }
@@ -63,14 +87,16 @@ export const useAuthStore = defineStore('authStore', {
     async register(email, password, firstName, lastName) {
       this.error = null;
       try {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password, firstName, lastName);
-
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const fullName = `${firstName} ${lastName}`.trim();
 
         await updateProfile(userCredential.user, {
           displayName: fullName
         });
 
+        await sendEmailVerification(userCredential.user);
+        
+        // ждем подтверждения email
         const newUser = {
           uid: userCredential.user.uid,
           email: userCredential.user.email,
@@ -78,11 +104,38 @@ export const useAuthStore = defineStore('authStore', {
           emailVerified: false
         };
 
-        await sendEmailVerification(userCredential.user)
         this.setUser(newUser);
-        return true
+        return true;
       } catch (err) {
         this.error = err.code;
+        return false;
+      }
+    },
+
+    async handleEmailVerification() {
+      if (!auth.currentUser) {
+        return false;
+      } 
+      
+      try {
+        // проверка подтвержден ли email
+        await auth.currentUser.reload();
+        const updatedUser = auth.currentUser;
+        
+        if (updatedUser.emailVerified) {
+          await setDoc(doc(db, 'users', updatedUser.uid), {
+            uid: updatedUser.uid,
+            email: updatedUser.email,
+            displayName: updatedUser.displayName,
+          });
+          
+          this.setUser(updatedUser);
+          return true;
+        }
+        return false;
+      } catch (err) {
+        this.error = err.code;
+        return false;
       }
     },
 
@@ -97,22 +150,29 @@ export const useAuthStore = defineStore('authStore', {
           displayName: fullName
         });
 
+        if (auth.currentUser) {
+          await setDoc(doc(db, 'users', auth.currentUser.uid), {
+            displayName: fullName
+          }, { merge: true });
+        }
+
         this.user = {
           ...this.user,
-          firstName,
-          lastName
+          displayName: fullName
         };
       } catch (err) {
-        this.error = err.code
+        this.error = err.code;
       }
     },
 
     initializeAuthListener() {
-      onAuthStateChanged(auth, (user) => {
+      onAuthStateChanged(auth, async (user) => {
         if (user) {
+          if (user.emailVerified) {
+            await this.checkOrCreateUserInFirestore(user);
+          }
           this.setUser(user);
-        }
-        else {
+        } else {
           this.clearUser();
         }
       });
@@ -125,22 +185,23 @@ export const useAuthStore = defineStore('authStore', {
         displayName: user.displayName,
         emailVerified: user.emailVerified,
       };
-      localStorage.setItem('user', JSON.stringify(this.user))
+      localStorage.setItem('user', JSON.stringify(this.user));
     },
 
     clearUser() {
       this.user = null;
-      localStorage.removeItem('user')
+      localStorage.removeItem('user');
     },
 
     getErrorMessage(code) {
       const messages = {
-        'auth/email-already-in-use': 'Email уже используется',
-        'auth/invalid-email': 'Неверный формат email',
+        'auth/email-already-in-use': 'Этот Email уже используется',
+        'auth/invalid-email': 'Неверный формат Email',
         'auth/user-not-found': 'Пользователь не найден',
         'auth/weak-password': 'Пароль должен содержать не менее 6 символов',
         'auth/wrong-password': 'Неверный пароль',
-        'email-not-verified': 'Ваш email не подтвержден. Перейдите по ссылке в письме, для подтверждения.'
+        'email-not-verified': 'Ваш email не подтвержден. Перейдите по ссылке в письме, для подтверждения',
+        'user-not-in-database': 'Пользователь не найден'
       };
       return messages[code] || 'Ошибка, попробуйте еще раз';
     },

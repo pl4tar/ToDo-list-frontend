@@ -1,5 +1,8 @@
 <template>
   <v-container>
+    <v-row justify="center">
+      <AppLogo/>
+    </v-row>
     <v-row
       align="center"
       justify="center">
@@ -7,8 +10,7 @@
         cols="12"
         sm="10">
         <v-card
-          class="elevation-6 mt-10"
-          color="#696969">
+          class="elevation-6 mt-10 bg-background-dark">
           <v-window v-model="step">
             <!-- Вход -->
             <v-window-item :value="1">
@@ -21,7 +23,7 @@
                 <v-col
                   cols="12"
                   md="6"
-                  class="bg-light-blue-darken-2 rounded-bl-xl">
+                  class="bg-primary rounded-bl-xl">
                   <PromoBlock
                     title="Нет аккаунта?"
                     description="Давайте все подготовим чтобы вы могли успешно пользоваться данным сервисом"
@@ -33,12 +35,12 @@
             </v-window-item>
 
             <!-- Регистрация -->
-            <v-window-item :value="2">
+            <v-window-item :value="2" > 
               <v-row>
                 <v-col
                   cols="12"
                   md="6"
-                  class="bg-light-blue-darken-2 rounded-br-xl">
+                  class="bg-primary rounded-br-xl">
                   <PromoBlock
                     title="Уже зарегистрировались?"
                     description="Войдите в свой аккаунт и наслаждайтесь ToDo-List"
@@ -65,6 +67,7 @@ import { ref } from 'vue';
 import LoginForm from '@/components/LoginForm.vue';
 import RegistrationForm from '@/components/RegistrationForm.vue';
 import PromoBlock from '@/components/PromoBlock.vue';
+import AppLogo from '@/components/navigation/AppLogo.vue'
 
 const step = ref(1);
 </script>

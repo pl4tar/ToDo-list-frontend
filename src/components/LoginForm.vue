@@ -19,7 +19,7 @@
             label="Почта"
             outlined
             dense
-            color="blue"
+            color="primary"
             class="mb-4"
           />
 
@@ -28,14 +28,14 @@
             label="Пароль"
             outlined
             dense
-            color="blue"
+            color="primary"
             autocomplete="current-password"
             type="password"
             class="mb-4"
           />
 
           <v-btn
-            color="blue"
+            color="primary"
             dark
             block
             tile
@@ -47,17 +47,17 @@
 
           <p 
             v-if="AuthStore.error"
-            class="text-center text-error text-body-1"
+            class="text-center text-warning text-body-1"
           >
             {{ AuthStore.getErrorMessage(AuthStore.error)}}
           </p>
 
           <div class="text-center">
-            <h6 class="my-4 text-grey">Или войдите через:</h6>
+            <h5 class="my-4 text-grey">Или войдите через:</h5>
             <v-btn
               depressed
               outlined
-              color="grey"
+              color="primary"
               size="small"
               icon="mdi-google"
               @click="handleGoogleLogin"
@@ -73,30 +73,35 @@
 import {ref} from 'vue'
 import { useAuthStore } from '@/stores/firebase/AuthStore';
 import { useRouter } from 'vue-router';
+import {useWarningStore} from '@/stores/WarningStore'
 
 const AuthStore = useAuthStore()
 const router = useRouter();
+const WarningStore = useWarningStore()
 
 const email = ref()
 const password = ref()
 
 async function handleLogin() {
-  const isLogin = await AuthStore.login(email.value, password.value)
-  if (isLogin) {
+  if (!email.value || !password.value) {
+    WarningStore.isWarningShow = true
+    WarningStore.warningText = 'Заполните все поля!'
+    return
+  }
+
+  const response = await AuthStore.login(email.value, password.value)
+  if (!response) {
+    WarningStore.isWarningShow = true
+    WarningStore.warningText = AuthStore.getErrorMessage(AuthStore.error)
+  } else {
     router.push('/tasks/all')
   }
 }
 
 async function handleGoogleLogin() {
-  await AuthStore.loginWithGoogle()
-  if (AuthStore.isAuthenticated) {
-    console.log(AuthStore.user)
+  const isLogin = await AuthStore.loginWithGoogle()
+  if (isLogin) {
+    router.push('/tasks/all')
   }
 }
-
-
 </script>
-
-<style scoped>
-
-</style>
