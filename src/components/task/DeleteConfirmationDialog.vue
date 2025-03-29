@@ -5,7 +5,7 @@
     width="auto"
   >
     <v-card 
-      min-width="400" 
+      min-width="250" 
       class="bg-background-light pa-4 elevation-10 rounded-lg"
     >
       <v-card-title class="mb-3 text-center">Удалить задачу?</v-card-title>

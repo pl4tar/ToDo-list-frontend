@@ -1,11 +1,16 @@
 <template>
   <div>
-    <div class="d-flex flex-wrap flex-column flex-sm-row align-center justify-space-between pa-2">
+    <div class="d-flex flex-wrap flex-column flex-sm-row align-center text-center justify-space-between pa-2">
       <div>
-        <h1 class="mb-1">{{ pageTitle }}</h1>
-        <div class="d-flex ga-2 mb-3 text-secondary">
-          <v-icon icon="mdi-check-circle-outline"></v-icon>
-          <p>Всего <span>100</span> задач</p>
+        <h1 
+          class="mb-3" 
+          style="line-height: 1.2;"
+        >
+          {{ pageTitle }}
+        </h1>
+        <div class="d-flex ga-2 mb-3 text-secondary justify-center justify-sm-start">         
+          <v-icon icon="mdi-check-circle-outline"/>
+          <p>Всего <span>100</span> задач</p>        
         </div>
       </div>
       <AddTaskDialog />
@@ -86,6 +91,7 @@ import AddTaskDialog from '@/components/task/AddTaskDialog.vue';
 import { useAllTasksStore } from '@/stores/AllTasksStore';
 
 const route = useRoute();
+
 const AllTasksStore = useAllTasksStore();
 
 const pageTitle = computed(() => {
@@ -236,11 +242,7 @@ onMounted(() => {
 
   onUnmounted(() => clearInterval(interval));
 });
+
+
 </script>
 
-<style scoped>
-/* .themeBtn {
-  position: absolute;
-  right: 10px;
-} */
-</style>
