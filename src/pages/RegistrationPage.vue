@@ -1,29 +1,29 @@
 <template>
   <v-container>
     <v-row justify="center">
-      <AppLogo/>    
+      <AppLogo />
     </v-row>
-    <v-row justify="center">    
+    <v-row justify="center">
       <div class="text-container">
-        <span 
-          v-for="(char, index) in text" 
-          class="char font-weight-bold" 
-          :key="index" 
+        <span
+          v-for="(char, index) in text"
+          class="char font-weight-bold"
+          :key="index"
           :style="{ animationDelay: `${index * 0.05}s` }"
         >
           {{ char }}
-        </span> 
+        </span>
       </div>
     </v-row>
     <v-row
       align="center"
-      justify="center">
+      justify="center"
+    >
       <v-col
         cols="12"
         sm="10">
         <v-card class="elevation-6 mt-10 bg-background-dark rounded-lg">
           <v-window v-model="step">
-            <!-- Вход -->
             <v-window-item :value="1">
               <v-row>
                 <v-col
@@ -44,9 +44,7 @@
                 </v-col>
               </v-row>
             </v-window-item>
-
-            <!-- Регистрация -->
-            <v-window-item :value="2" > 
+            <v-window-item :value="2">
               <v-row>
                 <v-col
                   cols="12"
@@ -78,7 +76,7 @@ import { ref, onMounted } from 'vue';
 import LoginForm from '@/components/LoginForm.vue';
 import RegistrationForm from '@/components/RegistrationForm.vue';
 import PromoBlock from '@/components/PromoBlock.vue';
-import AppLogo from '@/components/navigation/AppLogo.vue'
+import AppLogo from '@/components/navigation/AppLogo.vue';
 
 const step = ref(1);
 
@@ -109,7 +107,7 @@ const text = ref('Планирование без сложностей');
 @keyframes textAnim {
   from {
     opacity: 0;
-    color:rgb(129, 14, 145);
+    color: rgb(129, 14, 145);
     transform: translateX(20px);
   }
   to {

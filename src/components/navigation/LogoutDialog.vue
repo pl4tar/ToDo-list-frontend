@@ -1,8 +1,7 @@
 <template>
-  <v-dialog 
-    v-model="model" 
-    max-width="400"
-  >
+  <v-dialog
+    v-model="model"
+    max-width="400">
     <v-card
       class="bg-background-light pa-2"
       prepend-icon="mdi-logout"
@@ -10,13 +9,13 @@
       title="Подтвердите выход"
     >
       <template v-slot:actions>
-        <v-btn 
+        <v-btn
           class="text-primary elevation-8"
           variant="tonal"
           text="Выйти"
           @click="confirmLogout"
         />
-        <v-btn 
+        <v-btn
           class="bg-primary elevation-8"
           variant="flat"
           text="Отмена"
@@ -28,11 +27,11 @@
 </template>
 
 <script setup>
-const model = defineModel()
-const emit = defineEmits(['confirm'])
+const model = defineModel();
+const emit = defineEmits(['confirm']);
 
 function confirmLogout() {
-  emit('confirm')
-  model.value = false
+  emit('confirm');
+  model.value = false;
 }
 </script>

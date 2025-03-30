@@ -36,15 +36,17 @@ export const useTaskStore = defineStore('taskStore', {
 
     addNewTask() {
       const WarningStore = useWarningStore();
-      
+
       if (!this.titleTask || !this.descriptionTask) {
-        WarningStore.showWarning('Введите корректные название и описание задачи');
-        return      
+        WarningStore.showWarning(
+          'Введите корректные название и описание задачи',
+        );
+        return;
       }
 
       // логика добавления ...
 
-      this.clearFields()
+      this.clearFields();
 
       confetti({
         particleCount: 100,
@@ -57,17 +59,16 @@ export const useTaskStore = defineStore('taskStore', {
       this.isDialogShown = false;
     },
 
-    deleteTask() {
-    },
+    deleteTask() {},
 
     clearFields() {
-      this.titleTask = ''
-      this.descriptionTask = ''
-      this.startDate = null
-      this.endDate = null
-      this.isTaskInFavorites = false
-      this.selectedCategory = null
-      this.selectedPriority = null
-    }
+      this.titleTask = '';
+      this.descriptionTask = '';
+      this.startDate = null;
+      this.endDate = null;
+      this.isTaskInFavorites = false;
+      this.selectedCategory = null;
+      this.selectedPriority = null;
+    },
   },
 });

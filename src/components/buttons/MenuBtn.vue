@@ -15,9 +15,9 @@ import { useWindowSize } from '@vueuse/core';
 import { useMenuStore } from '@/stores/MenuStore';
 import { useRoute } from 'vue-router';
 
-const MenuStore = useMenuStore()
+const MenuStore = useMenuStore();
 
-const route = useRoute()
+const route = useRoute();
 
 const { width } = useWindowSize();
 

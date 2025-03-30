@@ -1,8 +1,7 @@
 <template>
   <v-dialog
     v-model="WarningStore.isWarningShow"
-    width="auto"
-  >
+    width="auto">
     <v-card
       max-width="400"
       prepend-icon="$error"
@@ -19,7 +18,6 @@
       </template>
     </v-card>
   </v-dialog>
-
 </template>
 
 <script setup>

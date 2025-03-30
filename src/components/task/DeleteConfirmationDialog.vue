@@ -1,11 +1,11 @@
 <template>
-  <v-dialog 
-    :model-value="modelValue" 
+  <v-dialog
+    :model-value="modelValue"
     @update:model-value="$emit('update:modelValue', $event)"
     width="auto"
   >
-    <v-card 
-      min-width="250" 
+    <v-card
+      min-width="250"
       class="bg-background-light pa-4 elevation-10 rounded-lg"
     >
       <v-card-title class="mb-3 text-center">Удалить задачу?</v-card-title>
@@ -31,13 +31,13 @@
 
 <script setup>
 defineProps({
-  modelValue: { type: Boolean, required: true }
+  modelValue: { type: Boolean, required: true },
 });
 
 const emit = defineEmits(['update:modelValue', 'confirm']);
 
 const handleDelete = () => {
-  emit('confirm'); 
-  emit('update:modelValue', false); 
+  emit('confirm');
+  emit('update:modelValue', false);
 };
 </script>

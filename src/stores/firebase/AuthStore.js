@@ -19,7 +19,11 @@ export const useAuthStore = defineStore('auth', {
   actions: {
     async register(email, password, firstName, lastName) {
       try {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password,
+        );
         const user = userCredential.user;
 
         const fullName = `${firstName} ${lastName}`;
@@ -27,18 +31,22 @@ export const useAuthStore = defineStore('auth', {
           displayName: fullName,
         });
 
-        await sendEmailVerification(user); 
+        await sendEmailVerification(user);
 
-        return true
+        return true;
       } catch (error) {
-        this.error = error.code
-        return false
+        this.error = error.code;
+        return false;
       }
     },
 
     async login(email, password) {
       try {
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const userCredential = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password,
+        );
         const user = userCredential.user;
 
         if (!user.emailVerified) {
@@ -50,7 +58,7 @@ export const useAuthStore = defineStore('auth', {
         this.setUser(user);
         return true;
       } catch (error) {
-        this.error = error.code
+        this.error = error.code;
         return false;
       }
     },
@@ -62,11 +70,11 @@ export const useAuthStore = defineStore('auth', {
         const provider = new GoogleAuthProvider();
         const userCredential = await signInWithPopup(auth, provider);
         const user = userCredential.user;
-        
+
         this.setUser(user);
         return true;
       } catch (err) {
-        this.error = err.code
+        this.error = err.code;
         return false;
       }
     },
@@ -97,7 +105,8 @@ export const useAuthStore = defineStore('auth', {
         'auth/invalid-email': 'Неверный формат email',
         'auth/user-not-found': 'Пользователь не найден',
         'auth/wrong-password': 'Неверный пароль',
-        'email-not-verified': 'Ваш email не подтвержден. Перейдите по ссылке в письме для подтверждения.',
+        'email-not-verified':
+          'Ваш email не подтвержден. Перейдите по ссылке в письме для подтверждения.',
         'user-not-in-database': 'Пользователь не найден в системе',
       };
       return messages[code] || 'Ошибка, попробуйте еще раз';

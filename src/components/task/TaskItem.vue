@@ -1,24 +1,23 @@
 <template>
   <div class="d-flex align-center ga-3 mb-5">
-    <TaskCard 
+    <TaskCard
       :task="task"
       @open-details="isDialogDetailsOpen = true"
-      @delete-click="isDialogForDeletionOpen = true"      
+      @delete-click="isDialogForDeletionOpen = true"
     />
-    <DeleteConfirmationDialog 
+    <DeleteConfirmationDialog
       v-model="isDialogForDeletionOpen"
-      @confirm="deleteTask"  
+      @confirm="deleteTask"
     />
     <TaskDetailsDialog
       v-model="isDialogDetailsOpen"
-      :task="task"
-    />
+      :task="task" />
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
-import {useTaskStore} from '@/stores/TaskStore.js'
+import { useTaskStore } from '@/stores/TaskStore.js';
 import TaskCard from '@/components/task/TaskCard.vue';
 import DeleteConfirmationDialog from '@/components/task/DeleteConfirmationDialog.vue';
 import TaskDetailsDialog from '@/components/task/TaskDetailsDialog.vue';
@@ -30,18 +29,18 @@ const props = defineProps({
   },
 });
 
-const TaskStore = useTaskStore()
+const TaskStore = useTaskStore();
 
 const isDialogDetailsOpen = ref(false);
 
-const isDialogForDeletionOpen = ref(false)
+const isDialogForDeletionOpen = ref(false);
 
-const isConfirmForDeletion = ref(false)
+const isConfirmForDeletion = ref(false);
 
 function deleteTask() {
   // isConfirmForDeletion.value = true
-  TaskStore.deleteTask(props.task.id)
-  isConfirmForDeletion.value = false
+  TaskStore.deleteTask(props.task.id);
+  isConfirmForDeletion.value = false;
   // isDialogForDeletionOpen.value = false
 }
 </script>

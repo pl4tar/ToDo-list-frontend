@@ -1,5 +1,7 @@
 <template>
-  <div class="d-flex justify-space-between flex-sm-row flex-column align-center">
+  <div
+    class="d-flex justify-space-between flex-sm-row flex-column align-center"
+  >
     <div class="d-flex justify-center ga-5 flex-wrap align-center ga-2 mb-2">
       <v-btn
         size="small"
@@ -25,10 +27,10 @@
       class="bg-background-light text-error elevation-0"
       icon="mdi-delete-empty"
       @click.stop="$emit('delete')"
-    /> 
-  </div> 
+    />
+  </div>
 </template>
 
 <script setup>
-defineEmits(['delete', 'edit', 'complete'])
+defineEmits(['delete', 'edit', 'complete']);
 </script>

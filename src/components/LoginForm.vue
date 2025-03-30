@@ -6,17 +6,16 @@
         class="text-center">
         <h3>Войдите в свой аккаунт</h3>
         <h5 class="text-grey mt-2">
-          Войдите в свой аккаунт чтобы пользоваться всеми возможностями ToDo-List
+          Войдите в свой аккаунт чтобы пользоваться всеми возможностями
+          ToDo-List
         </h5>
       </v-col>
-
       <v-col
         cols="12"
         md="8">
-        <v-form 
+        <v-form
           ref="loginForm"
-          @submit.prevent="handleLogin"
-        >
+          @submit.prevent="handleLogin">
           <v-text-field
             v-model="email"
             label="Почта"
@@ -26,7 +25,6 @@
             class="mb-4"
             :rules="emailRules"
           />
-
           <v-text-field
             v-model="password"
             label="Пароль"
@@ -37,15 +35,13 @@
             type="password"
             class="mb-4"
           />
-
           <v-btn
             color="primary"
             dark
             block
             tile
             type="submit"
-            class="mb-4"
-          >
+            class="mb-4">
             Войти
           </v-btn>
           <div class="text-center">
@@ -66,41 +62,41 @@
 </template>
 
 <script setup>
-import {ref} from 'vue'
+import { ref } from 'vue';
 import { useAuthStore } from '@/stores/firebase/AuthStore';
 import { useRouter } from 'vue-router';
-import {useWarningStore} from '@/stores/WarningStore'
-import { emailRules } from '@/validation/rules'
+import { useWarningStore } from '@/stores/WarningStore';
+import { emailRules } from '@/validation/rules';
 
-const AuthStore = useAuthStore()
+const AuthStore = useAuthStore();
 const router = useRouter();
-const WarningStore = useWarningStore()
+const WarningStore = useWarningStore();
 
-const email = ref()
-const password = ref()
+const email = ref();
+const password = ref();
 
-const loginForm = ref()
+const loginForm = ref();
 
 async function handleLogin() {
-  const { valid } = await loginForm.value.validate()
+  const { valid } = await loginForm.value.validate();
 
   if (!valid) {
-    return
+    return;
   }
 
-  const response = await AuthStore.login(email.value, password.value)
+  const response = await AuthStore.login(email.value, password.value);
   if (!response) {
-    WarningStore.isWarningShow = true
-    WarningStore.warningText = AuthStore.getErrorMessage(AuthStore.error)
+    WarningStore.isWarningShow = true;
+    WarningStore.warningText = AuthStore.getErrorMessage(AuthStore.error);
   } else {
-    router.push('/tasks/all')
+    router.push('/tasks/all');
   }
 }
 
 async function handleGoogleLogin() {
-  const isLogin = await AuthStore.loginWithGoogle()
+  const isLogin = await AuthStore.loginWithGoogle();
   if (isLogin) {
-    router.push('/tasks/all')
+    router.push('/tasks/all');
   }
 }
 </script>

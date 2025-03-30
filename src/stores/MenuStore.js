@@ -27,7 +27,7 @@ export const useMenuStore = defineStore('menuStore', {
         path: '/feedback',
       },
     ],
-    
+
     categories: [
       {
         id: 1,
@@ -69,9 +69,6 @@ export const useMenuStore = defineStore('menuStore', {
         iconColor: 'grey',
         path: '/tasks/withoutCategory',
       },
-    ]
+    ],
   }),
 });
-
-
-

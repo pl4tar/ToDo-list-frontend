@@ -3,14 +3,13 @@
     <p class="text-center mb-8 text-h5 text-secondary font-weight-bold">
       Напишите нам, если у вас есть вопросы, предложения или замечания!
     </p>
-    <v-sheet 
-      class="bg-background-dark pa-7 rounded-lg elevation-10 mx-auto" 
+    <v-sheet
+      class="bg-background-dark pa-7 rounded-lg elevation-10 mx-auto"
       max-width="600"
     >
-      <v-form 
-        ref="form" 
-        @submit.prevent="handleSubmit"
-      >
+      <v-form
+        ref="form"
+        @submit.prevent="handleSubmit">
         <v-text-field
           v-model="formData.name"
           :rules="nameRules"
@@ -18,7 +17,6 @@
           required
           clearable
         />
-        
         <v-text-field
           v-model="formData.email"
           :rules="emailRules"
@@ -27,7 +25,6 @@
           required
           clearable
         />
-        
         <v-select
           v-model="formData.subject"
           :items="subjects"
@@ -35,7 +32,6 @@
           :rules="subjectRules"
           required
         />
-        
         <v-textarea
           v-model="formData.message"
           :rules="messageRules"
@@ -45,7 +41,6 @@
           counter
           maxlength="500"
         />
-                
         <v-checkbox
           v-model="formData.consent"
           :rules="consentRules"
@@ -53,7 +48,6 @@
           label="Я согласен на обработку персональных данных"
           required
         />
-        
         <v-btn
           type="submit"
           color="primary"
@@ -66,7 +60,6 @@
         </v-btn>
       </v-form>
     </v-sheet>
-    
     <v-snackbar
       v-model="snackbar.visible"
       :color="snackbar.color"
@@ -80,7 +73,13 @@
 <script setup>
 import { ref } from 'vue';
 import emailjs from '@emailjs/browser';
-import { nameRules, emailRules, subjectRules, messageRules, consentRules } from '@/validation/rules'
+import {
+  nameRules,
+  emailRules,
+  subjectRules,
+  messageRules,
+  consentRules,
+} from '@/validation/rules';
 
 emailjs.init('KKy3k-fJ-DwzkNOIL');
 
@@ -89,7 +88,7 @@ const formData = ref({
   email: '',
   subject: '',
   message: '',
-  consent: false
+  consent: false,
 });
 
 const subjects = [
@@ -97,7 +96,7 @@ const subjects = [
   'Вопрос по функционалу',
   'Предложение по улучшению',
   'Сообщение об ошибке',
-  'Другое'
+  'Другое',
 ];
 
 const isSubmitting = ref(false);
@@ -106,30 +105,26 @@ const form = ref(null);
 const snackbar = ref({
   visible: false,
   message: '',
-  color: 'success'
+  color: 'success',
 });
 
 const handleSubmit = async () => {
   const { valid } = await form.value.validate();
-  
+
   if (!valid) {
     return;
   }
-  
+
   isSubmitting.value = true;
-  
+
   try {
-    await emailjs.send(
-      'service_5zocllj',    
-      'template_al03qph',  
-      {
-        name: formData.value.name,
-        email: formData.value.email,
-        subject: formData.value.subject,
-        message: formData.value.message,
-        date: new Date().toLocaleString()
-      }
-    );
+    await emailjs.send('service_5zocllj', 'template_al03qph', {
+      name: formData.value.name,
+      email: formData.value.email,
+      subject: formData.value.subject,
+      message: formData.value.message,
+      date: new Date().toLocaleString(),
+    });
     showNotification('Сообщение успешно отправлено!', 'success');
     resetForm();
   } catch (error) {
@@ -144,7 +139,7 @@ const showNotification = (message, color) => {
   snackbar.value = {
     visible: true,
     message,
-    color
+    color,
   };
 };
 
@@ -155,7 +150,7 @@ const resetForm = () => {
     email: '',
     subject: '',
     message: '',
-    consent: false
+    consent: false,
   };
 };
 </script>

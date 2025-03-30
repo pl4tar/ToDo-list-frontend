@@ -33,6 +33,6 @@ import UserProfile from '@/components/navigation/UserProfile.vue';
 import CategoriesSection from '@/components/navigation/CategoriesSection.vue';
 import { useRoute } from 'vue-router';
 
-const route = useRoute()
-const MenuStore = useMenuStore()
+const route = useRoute();
+const MenuStore = useMenuStore();
 </script>

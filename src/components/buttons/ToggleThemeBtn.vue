@@ -10,14 +10,15 @@
 
 <script setup>
 import { useTheme } from 'vuetify';
-import {onMounted} from 'vue';
+import { onMounted } from 'vue';
 
 const theme = useTheme();
 
 function toggleTheme() {
-  const newTheme = theme.global.name.value === 'darkTheme' ? 'lightTheme' : 'darkTheme';
-    theme.global.name.value = newTheme;
-    localStorage.setItem('theme', newTheme);
+  const newTheme =
+    theme.global.name.value === 'darkTheme' ? 'lightTheme' : 'darkTheme';
+  theme.global.name.value = newTheme;
+  localStorage.setItem('theme', newTheme);
 }
 
 onMounted(() => {

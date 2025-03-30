@@ -5,15 +5,13 @@
       <v-container class="pa-10">
         <MenuBtn />
         <ToggleThemeBtn />
-        <router-view 
-          v-slot="{ Component }" 
-          class="mt-10"
-        >
-          <transition 
-            name="fade-transform" 
-            mode="out-in"
-          >
-            <component :is="Component"/>
+        <router-view
+          v-slot="{ Component }"
+          class="mt-10">
+          <transition
+            name="fade-transform"
+            mode="out-in">
+            <component :is="Component" />
           </transition>
         </router-view>
       </v-container>
