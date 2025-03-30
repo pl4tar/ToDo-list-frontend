@@ -1,10 +1,15 @@
 <template>
   <div>
-    <div class="d-flex flex-wrap flex-column flex-sm-row align-center justify-space-between pa-2">
+    <div class="d-flex flex-wrap flex-column flex-sm-row align-center text-center justify-space-between pa-2">
       <div>
-        <h1 class="mb-1">{{ pageTitle }}</h1>
-        <div class="d-flex ga-2 mb-3 text-secondary">
-          <v-icon icon="mdi-check-circle-outline"></v-icon>
+        <h1
+          class="mb-3"
+          style="line-height: 1.2"
+        >
+          {{ pageTitle }}
+        </h1>
+        <div class="d-flex ga-2 mb-3 text-secondary justify-center justify-sm-start">
+          <v-icon icon="mdi-check-circle-outline" />
           <p>Всего <span>100</span> задач</p>
         </div>
       </div>
@@ -41,7 +46,8 @@
         v-for="task in tasks"
         :key="task.id"
         cols="12"
-        md="6">
+        md="6"
+      >
         <TaskItem :task="task" />
       </v-col>
       <v-col
@@ -51,7 +57,8 @@
         <p class="d-inline-block mr-2">Пока ничего нет</p>
         <v-icon
           icon="mdi-emoticon-cry-outline"
-          size="x-large" />
+          size="x-large" 
+        />
         <p class="mt-3">Добавьте новую задачу!</p>
       </v-col>
     </v-row>
@@ -86,6 +93,7 @@ import AddTaskDialog from '@/components/task/AddTaskDialog.vue';
 import { useAllTasksStore } from '@/stores/AllTasksStore';
 
 const route = useRoute();
+
 const AllTasksStore = useAllTasksStore();
 
 const pageTitle = computed(() => {
@@ -237,10 +245,3 @@ onMounted(() => {
   onUnmounted(() => clearInterval(interval));
 });
 </script>
-
-<style scoped>
-/* .themeBtn {
-  position: absolute;
-  right: 10px;
-} */
-</style>

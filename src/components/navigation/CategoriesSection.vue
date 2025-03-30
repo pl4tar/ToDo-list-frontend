@@ -7,8 +7,7 @@
             <v-icon
               icon="mdi-view-grid-plus"
               size="large"
-              color="primary"
-            />
+              color="primary" />
           </template>
           <div class="d-flex align-center">
             <v-list-item-title class="font-weight-bold">
@@ -45,8 +44,7 @@
         <template v-slot:prepend>
           <v-icon
             color="primary"
-            :icon="menuItem.icon" 
-          />
+            :icon="menuItem.icon" />
         </template>
         <v-list-item-title class="font-weight-bold">
           {{ menuItem.name }}
@@ -56,12 +54,11 @@
   </v-sheet>
 </template>
 
-
 <script setup>
 import { useRouter } from 'vue-router';
 import { useMenuStore } from '@/stores/MenuStore';
 
 const router = useRouter();
 
-const MenuStore = useMenuStore()
+const MenuStore = useMenuStore();
 </script>

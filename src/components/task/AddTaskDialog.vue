@@ -24,14 +24,14 @@
         <template v-slot:prepend>
           <v-icon
             icon="mdi-plus"
-            color="primary" 
-          />
+            color="primary" />
         </template>
       </v-text-field>
       <v-textarea
         label="Описание"
         clearable
-        v-model="TaskStore.descriptionTask" />
+        v-model="TaskStore.descriptionTask"
+      />
       <v-switch
         inset
         class="d-flex mb-2 align-center justify-center"
@@ -40,10 +40,14 @@
       >
         <template v-slot:append>
           <span class="text-primary font-weight-bold">
-            {{ TaskStore.isTaskInFavorites ? "В избранном" : "Добавить в избранное" }}
+            {{
+              TaskStore.isTaskInFavorites
+                ? "В избранном"
+                : "Добавить в избранное"
+            }}
           </span>
         </template>
-      </v-switch>   
+      </v-switch>
       <v-select
         class="mb-2"
         label="Категория"
@@ -117,7 +121,9 @@
           />
         </div>
       </v-sheet>
-      <div class="d-flex flex-column ga-5 justify-center align-center dialog_btn_wrapper">
+      <div
+        class="d-flex flex-column ga-5 justify-center align-center dialog_btn_wrapper"
+      >
         <v-btn
           color="primary"
           text="Закрыть"
@@ -136,7 +142,7 @@
           </template>
         </v-btn>
       </div>
-    </v-card> 
+    </v-card>
   </v-dialog>
 </template>
 
@@ -149,7 +155,7 @@ import { useFormatDate } from '@/composables/useFormatDate';
 import { useMenuStore } from '@/stores/MenuStore';
 
 const TaskConfigStore = useTaskConfigStore();
-const MenuStore = useMenuStore()
+const MenuStore = useMenuStore();
 const TaskStore = useTaskStore();
 
 const { formatDate } = useFormatDate();
@@ -169,7 +175,6 @@ const handleDateSave = (date) => {
   TaskStore.isDialogDateOpen = false;
   TaskStore.currentDate = null;
 };
-
 </script>
 
 <style lang="scss" scoped>

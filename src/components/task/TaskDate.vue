@@ -22,7 +22,7 @@ const { formatDate } = useFormatDate();
 defineProps({
   task: {
     type: Object,
-    required: true
-  }
-})
+    required: true,
+  },
+});
 </script>

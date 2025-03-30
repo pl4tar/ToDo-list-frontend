@@ -27,7 +27,7 @@ export const useMenuStore = defineStore('menuStore', {
         path: '/feedback',
       },
     ],
-    
+
     categories: [
       {
         id: 1,
@@ -35,7 +35,7 @@ export const useMenuStore = defineStore('menuStore', {
         value: 'all',
         icon: 'mdi-view-list',
         iconColor: 'grey',
-        path: '/',
+        path: '/tasks/all',
       },
       {
         id: 2,
@@ -69,9 +69,6 @@ export const useMenuStore = defineStore('menuStore', {
         iconColor: 'grey',
         path: '/tasks/withoutCategory',
       },
-    ]
+    ],
   }),
 });
-
-
-

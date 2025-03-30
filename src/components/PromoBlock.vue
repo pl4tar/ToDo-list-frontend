@@ -11,8 +11,7 @@
         tile
         outlined
         color="warning"
-        @click="$emit('button-click')"
-      >
+        @click="$emit('button-click')">
         {{ buttonText }}
       </v-btn>
     </div>
@@ -23,7 +22,7 @@
 defineProps({
   title: String,
   description: String,
-  buttonText: String
+  buttonText: String,
 });
 
 defineEmits(['button-click']);

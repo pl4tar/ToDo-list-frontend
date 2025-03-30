@@ -10,8 +10,8 @@
     <v-divider />
 
     <div class="pa-3">
-      <TaskDate :task="task"/>
-      <TaskActions 
+      <TaskDate :task="task" />
+      <TaskActions
         @delete="$emit('delete-click')"
         @edit="$emit('edit-click')"
         @complete="$emit('complete-click')"
@@ -27,9 +27,9 @@ import TaskActions from '@/components/task/TaskActions.vue';
 defineProps({
   task: {
     type: Object,
-    required: true
-  }
-})
+    required: true,
+  },
+});
 
-defineEmits(['open-details', 'delete-click', 'complete-click'])
+defineEmits(['open-details', 'delete-click', 'complete-click']);
 </script>
