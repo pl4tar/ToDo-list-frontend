@@ -44,14 +44,6 @@
           >
             Войти
           </v-btn>
-
-          <p 
-            v-if="AuthStore.error"
-            class="text-center text-warning text-body-1"
-          >
-            {{ AuthStore.getErrorMessage(AuthStore.error)}}
-          </p>
-
           <div class="text-center">
             <h5 class="my-4 text-grey">Или войдите через:</h5>
             <v-btn

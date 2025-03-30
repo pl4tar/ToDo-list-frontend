@@ -70,40 +70,23 @@
           >
             Регистрация
           </v-btn>
-          <p 
-            v-if="AuthStore.error"
-            class="text-center text-warning text-body-1"
-          >
-            {{ }}
-          </p>
-          <!-- <div class="text-center">
-            <h6 class="text-grey my-4">Или зарегистрируйтесь, используя:</h6>
-            <v-btn
-              depressed
-              outlined
-              size="small"
-              color="primary"
-              icon="mdi-google"
-            />
-          </div> -->
         </v-form>
       </v-col>
     </v-row>
-    
   </v-card-text>
   
-  <CommonDialog v-model="dialog">
+  <VerificationDialog v-model="dialog">
     На вашу почту была отправлена одноразовая ссылка. Перейдите по ней, чтобы подтвердить свой email. 
     После этого вы сможете войти в свой аккаунт.
     <span class="text-primary">Если письмо не пришло, проверьте папку "Спам"</span>
-  </CommonDialog>
+  </VerificationDialog>
 
 </template>
 
 <script setup>
 import { ref } from 'vue'
 import { useAuthStore } from '@/stores/firebase/AuthStore'
-import CommonDialog from '@/components/CommonDialog.vue';
+import VerificationDialog from '@/components/VerificationDialog.vue';
 import {useWarningStore} from '@/stores/WarningStore'
 
 const WarningStore = useWarningStore()
@@ -114,8 +97,6 @@ const password = ref(null)
 const firstName = ref('');
 const lastName = ref('');
 
-const errorMessage = ref('');
-
 const dialog = ref(false)
 
 async function handleRegister() {
@@ -125,13 +106,13 @@ async function handleRegister() {
     return
   }
 
-    const response = await AuthStore.register(email.value, password.value, firstName.value, lastName.value);
-    if (response) {
-      dialog.value = true; 
-    }
-    else {
-      WarningStore.isWarningShow = true
-      WarningStore.warningText = AuthStore.getErrorMessage(AuthStore.error)
-    }
+  const response = await AuthStore.register(email.value, password.value, firstName.value, lastName.value);
+  if (response) {
+    dialog.value = true; 
+  }
+  else {
+    WarningStore.isWarningShow = true
+    WarningStore.warningText = AuthStore.getErrorMessage(AuthStore.error)
+  }
 }
 </script>

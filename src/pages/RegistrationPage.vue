@@ -21,8 +21,7 @@
       <v-col
         cols="12"
         sm="10">
-        <v-card
-          class="elevation-6 mt-10 bg-background-dark">
+        <v-card class="elevation-6 mt-10 bg-background-dark rounded-lg">
           <v-window v-model="step">
             <!-- Вход -->
             <v-window-item :value="1">
