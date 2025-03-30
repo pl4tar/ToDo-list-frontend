@@ -96,11 +96,9 @@ export const useAuthStore = defineStore('auth', {
         'auth/email-already-in-use': 'Email уже используется',
         'auth/invalid-email': 'Неверный формат email',
         'auth/user-not-found': 'Пользователь не найден',
-        'auth/weak-password': 'Пароль должен содержать не менее 6 символов',
         'auth/wrong-password': 'Неверный пароль',
         'email-not-verified': 'Ваш email не подтвержден. Перейдите по ссылке в письме для подтверждения.',
         'user-not-in-database': 'Пользователь не найден в системе',
-        'auth/popup-blocked': 'Всплывающее окно было заблокировано браузером',
       };
       return messages[code] || 'Ошибка, попробуйте еще раз';
     },

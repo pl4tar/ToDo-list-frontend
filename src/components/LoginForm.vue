@@ -13,7 +13,10 @@
       <v-col
         cols="12"
         md="8">
-        <v-form @submit.prevent="handleLogin">
+        <v-form 
+          ref="loginForm"
+          @submit.prevent="handleLogin"
+        >
           <v-text-field
             v-model="email"
             label="Почта"
@@ -21,6 +24,7 @@
             dense
             color="primary"
             class="mb-4"
+            :rules="emailRules"
           />
 
           <v-text-field
@@ -66,6 +70,7 @@ import {ref} from 'vue'
 import { useAuthStore } from '@/stores/firebase/AuthStore';
 import { useRouter } from 'vue-router';
 import {useWarningStore} from '@/stores/WarningStore'
+import { emailRules } from '@/validation/rules'
 
 const AuthStore = useAuthStore()
 const router = useRouter();
@@ -74,10 +79,12 @@ const WarningStore = useWarningStore()
 const email = ref()
 const password = ref()
 
+const loginForm = ref()
+
 async function handleLogin() {
-  if (!email.value || !password.value) {
-    WarningStore.isWarningShow = true
-    WarningStore.warningText = 'Заполните все поля!'
+  const { valid } = await loginForm.value.validate()
+
+  if (!valid) {
     return
   }
 

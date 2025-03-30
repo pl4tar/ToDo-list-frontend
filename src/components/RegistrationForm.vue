@@ -11,7 +11,10 @@
         class="px-2"
         cols="12"
         md="8">
-        <v-form @submit.prevent="handleRegister">
+        <v-form 
+          ref="registerForm"
+          @submit.prevent="handleRegister"
+        >
           <v-row>
             <v-col
               cols="12"
@@ -21,6 +24,7 @@
                 label="Имя"
                 outlined
                 dense
+                :rules="nameRules"
                 color="primary"
                 autocomplete="given-name"
               />
@@ -32,6 +36,7 @@
               <v-text-field
                 v-model="lastName"
                 label="Фамилия"
+                :rules="nameRules"
                 outlined
                 dense
                 color="primary"
@@ -48,6 +53,7 @@
             dense
             color="primary"
             class="my-4"
+            :rules="emailRules"
           />
 
           <v-text-field
@@ -59,7 +65,21 @@
             color="primary"
             autocomplete="new-password"
             class="mb-4"
+            :rules="passwordRules"
           />
+          <div 
+            class="ml-4 mb-5" 
+            style="margin-top: -10px;"
+          >
+            <ul 
+              v-for="rule in passwordRulesList"
+              :key="rule.id"
+            >
+              <li>
+                {{ rule.text }}
+              </li>
+            </ul>
+          </div>
           <v-btn
             color="blue"
             dark
@@ -88,27 +108,30 @@ import { ref } from 'vue'
 import { useAuthStore } from '@/stores/firebase/AuthStore'
 import VerificationDialog from '@/components/VerificationDialog.vue';
 import {useWarningStore} from '@/stores/WarningStore'
+import { nameRules, emailRules, passwordRules, passwordRulesList } from '@/validation/rules'
 
 const WarningStore = useWarningStore()
 const AuthStore = useAuthStore()
 
 const email = ref(null)
 const password = ref(null)
-const firstName = ref('');
-const lastName = ref('');
+const firstName = ref('')
+const lastName = ref('')
 
 const dialog = ref(false)
 
+const registerForm = ref()
+
 async function handleRegister() {
-  if (!email.value || !password.value || !firstName.value || !lastName.value) {
-    WarningStore.isWarningShow = true
-    WarningStore.warningText = 'Заполните все поля!'
+  const { valid } = await registerForm.value.validate()
+
+  if (!valid) {
     return
   }
 
-  const response = await AuthStore.register(email.value, password.value, firstName.value, lastName.value);
+  const response = await AuthStore.register(email.value, password.value, firstName.value, lastName.value)
   if (response) {
-    dialog.value = true; 
+    dialog.value = true
   }
   else {
     WarningStore.isWarningShow = true

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p class="text-center mb-8 text-h5 text-secondary">
+    <p class="text-center mb-8 text-h5 text-secondary font-weight-bold">
       Напишите нам, если у вас есть вопросы, предложения или замечания!
     </p>
     <v-sheet 
@@ -80,6 +80,7 @@
 <script setup>
 import { ref } from 'vue';
 import emailjs from '@emailjs/browser';
+import { nameRules, emailRules, subjectRules, messageRules, consentRules } from '@/validation/rules'
 
 emailjs.init('KKy3k-fJ-DwzkNOIL');
 
@@ -107,30 +108,6 @@ const snackbar = ref({
   message: '',
   color: 'success'
 });
-
-const nameRules = [
-  v => !!v || 'Обязательное поле',
-  v => v.length <= 50 || 'Не более 50 символов'
-];
-
-const emailRules = [
-  v => !!v || 'Обязательное поле',
-  v => /.+@.+\..+/.test(v) || 'Введите корректный email'
-];
-
-const subjectRules = [
-  v => !!v || 'Выберите тему сообщения'
-];
-
-const messageRules = [
-  v => !!v || 'Обязательное поле',
-  v => v.length >= 10 || 'Минимум 10 символов',
-  v => v.length <= 500 || 'Максимум 500 символов'
-];
-
-const consentRules = [
-  v => !!v || 'Необходимо ваше согласие'
-];
 
 const handleSubmit = async () => {
   const { valid } = await form.value.validate();
