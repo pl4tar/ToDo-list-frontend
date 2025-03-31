@@ -1,69 +1,46 @@
-import { defineStore } from 'pinia';
+import {defineStore} from 'pinia'
+import {ref} from 'vue'
+import {db} from '@/firebase/firebaseConfig.js'
+import {collection, onSnapshot, query, where} from 'firebase/firestore'
+import {useAuthStore} from '@/stores/firebase/AuthStore'
 
-export const useAllTasksStore = defineStore('allTasksStore', {
-  state: () => ({
-    // временный список для верстки
-    temporaryTasks: [
-      {
-        id: 1,
-        title: 'Написать стих',
-        description: 'Создать шедевр поэтического искусства',
-        isTaskInFavorites: true,
-        category: 'studies',
-        priority: 'medium',
-        startDate: new Date('2025-03-12'),
-        endDate: new Date('2025-03-14'),
-        isTaskCompleted: false,
-      },
-      {
-        id: 2,
-        title: 'Погладить кота',
-        description: 'Это типо описание задачи 2',
-        isTaskInFavorites: true,
-        category: 'job',
-        priority: 'low',
-        isTaskCompleted: false,
-      },
-      {
-        id: 3,
-        title: 'Постирать шапку',
-        description: 'Это типо описание задачи 3',
-        isTaskInFavorites: false,
-        category: 'personal',
-        priority: 'height',
-        startDate: new Date('2025-03-13'),
-        isTaskCompleted: true,
-      },
-      {
-        id: 4,
-        title: 'Полить кактус',
-        description: 'Это типо описание задачи 4',
-        isTaskInFavorites: false,
-        category: 'job',
-        priority: 'height',
-        startDate: new Date('2025-03-21'),
-        isTaskCompleted: false,
-      },
-      {
-        id: 5,
-        title: 'Попить чаю',
-        description: 'Это типо описание задачи 5',
-        isTaskInFavorites: false,
-        category: '',
-        priority: 'height',
-        startDate: new Date('2025-03-25'),
-        isTaskCompleted: false,
-      },
-      {
-        id: 6,
-        title: 'Сварить пельмени',
-        description: 'Это типо описание задачи 6',
-        isTaskInFavorites: false,
-        category: 'personal',
-        priority: 'height',
-        startDate: new Date('2025-03-23'),
-        isTaskCompleted: false,
-      },
-    ],
-  }),
-});
+export const useAllTasksStore = defineStore('allTasksStore', () => {
+  const authStore = useAuthStore()
+  const tasks = ref([])
+  const isLoading = ref(true)
+
+  const subscribeToTasks = () => {
+    if (!authStore.user) {
+      isLoading.value = false
+      return
+    }
+
+    const q = query(
+        collection(db, 'tasks'),
+        where('userId', '==', authStore.user.uid)
+    )
+
+    return onSnapshot(q, (querySnapshot) => {
+      tasks.value = querySnapshot.docs.map(doc => {
+        const data = doc.data()
+        return {
+          id: doc.id,
+          title: data.title,
+          description: data.description,
+          isTaskInFavorites: data.isFavorite,
+          category: data.category,
+          priority: data.priority,
+          startDate: data.startDate?.toDate(),
+          endDate: data.endDate?.toDate(),
+          isTaskCompleted: data.completed
+        }
+      })
+      isLoading.value = false
+    }, (error) => {
+      console.error('Ошибка загрузки задач:', error)
+      isLoading.value = false
+    })
+  }
+
+  return { tasks, isLoading, subscribeToTasks }
+})

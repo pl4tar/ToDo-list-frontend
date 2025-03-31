@@ -1,74 +1,97 @@
-import { defineStore } from 'pinia';
-import confetti from 'canvas-confetti';
-import { useWarningStore } from '@/stores/WarningStore';
+import { defineStore } from 'pinia'
+import { ref } from 'vue'
+import { db } from '@/firebase/firebaseConfig.js'
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
+import { useAuthStore } from '@/stores/firebase/AuthStore'
+import { useTaskConfigStore } from '@/stores/TaskConfigStore'
 
-export const useTaskStore = defineStore('taskStore', {
-  state: () => ({
-    isDialogShown: false,
-    isDialogDateOpen: false,
-    selectedDateType: null,
-    currentDate: null,
+export const useTaskStore = defineStore('task', () => {
+  const authStore = useAuthStore()
+  const TaskConfigStore = useTaskConfigStore()
 
-    startDate: null,
-    endDate: null,
-    titleTask: null,
-    descriptionTask: null,
-    isTaskInFavorites: false,
-    selectedCategory: null,
-    selectedPriority: null,
-  }),
+  // Состояние формы
+  const isDialogShown = ref(false)
+  const titleTask = ref('')
+  const descriptionTask = ref('')
+  const isTaskInFavorites = ref(false)
+  const selectedCategory = ref(null)
+  const selectedPriority = ref(0) // Индекс приоритета
+  const startDate = ref(null)
+  const endDate = ref(null)
 
-  actions: {
-    // диалог для выбора дат
-    openDialogDate(type) {
-      this.isDialogDateOpen = true;
-      this.selectedDateType = type;
-      this.currentDate = type === 'start' ? this.startDate : this.endDate;
-    },
-    closeDialogDate() {
-      this.isDialogDateOpen = false;
-    },
+  // Для DatePicker
+  const isDialogDateOpen = ref(false)
+  const currentDate = ref(null)
+  const selectedDateType = ref('') // 'start' или 'end'
 
-    // диалог добавления задачи
-    closeDialog() {
-      this.isDialogShown = false;
-    },
+  const openDialogDate = (type) => {
+    selectedDateType.value = type
+    currentDate.value = type === 'start' ? startDate.value : endDate.value
+    isDialogDateOpen.value = true
+  }
 
-    addNewTask() {
-      const WarningStore = useWarningStore();
+  const closeDialogDate = () => {
+    isDialogDateOpen.value = false
+  }
 
-      if (!this.titleTask || !this.descriptionTask) {
-        WarningStore.showWarning(
-          'Введите корректные название и описание задачи',
-        );
-        return;
-      }
+  const addNewTask = async () => {
+    if (!authStore.user) {return}
 
-      // логика добавления ...
+    try {
+      const priorityData = TaskConfigStore.priorities[selectedPriority.value]
 
-      this.clearFields();
+      await addDoc(collection(db, 'tasks'), {
+        title: titleTask.value,
+        description: descriptionTask.value,
+        isFavorite: isTaskInFavorites.value,
+        category: selectedCategory.value,
+        priority: priorityData.value,
+        priorityTitle: priorityData.title,
+        priorityColor: priorityData.color,
+        startDate: startDate.value,
+        endDate: endDate.value,
+        completed: false,
+        userId: authStore.user.uid,
+        createdAt: serverTimestamp()
+      })
+      resetForm()
+      closeDialog()
+    } catch (error) {
+      console.error('Ошибка при добавлении задачи:', error)
+      throw error
+    }
+  }
 
-      confetti({
-        particleCount: 100,
-        spread: 250,
-        startVelocity: 50,
-        ticks: 100,
-        origin: { y: 0.6 },
-        colors: ['#f0f0f0', '#5e03fc', '#fc036b'],
-      });
-      this.isDialogShown = false;
-    },
+  const resetForm = () => {
+    titleTask.value = ''
+    descriptionTask.value = ''
+    isTaskInFavorites.value = false
+    selectedCategory.value = null
+    selectedPriority.value = 0
+    startDate.value = null
+    endDate.value = null
+  }
 
-    deleteTask() {},
+  const closeDialog = () => {
+    isDialogShown.value = false
+  }
 
-    clearFields() {
-      this.titleTask = '';
-      this.descriptionTask = '';
-      this.startDate = null;
-      this.endDate = null;
-      this.isTaskInFavorites = false;
-      this.selectedCategory = null;
-      this.selectedPriority = null;
-    },
-  },
-});
+  return {
+    isDialogShown,
+    titleTask,
+    descriptionTask,
+    isTaskInFavorites,
+    selectedCategory,
+    selectedPriority,
+    startDate,
+    endDate,
+    isDialogDateOpen,
+    currentDate,
+    selectedDateType,
+    addNewTask,
+    resetForm,
+    closeDialog,
+    openDialogDate,
+    closeDialogDate
+  }
+})
