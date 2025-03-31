@@ -14,7 +14,6 @@
         :max="maxDate"
         :allowed-dates="allowedDates"
       ></v-date-picker>
-
       <div class="d-flex justify-space-between mt-4">
         <v-btn
           color="primary"
@@ -23,7 +22,6 @@
         >
           Сегодня
         </v-btn>
-
         <div>
           <v-btn
             color="primary"
@@ -51,12 +49,10 @@ import { ref, computed} from 'vue';
 
 const TaskStore = useTaskStore();
 const minDate = ref(new Date());
-minDate.value.setDate(minDate.value.getDate() - 1); // Можно выбрать вчерашнюю дату
+minDate.value.setDate(minDate.value.getDate() - 1);
 
-// Максимальная дата (необязательно)
 const maxDate = ref(null);
 
-// Разрешить выбор текущей даты
 const allowedDates = (date) => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -75,7 +71,6 @@ const selectedDate = computed({
   }
 });
 
-// Выбор текущей даты
 const selectToday = () => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -93,7 +88,7 @@ const saveDate = () => {
 </script>
 
 <style scoped>
-/* Добавляем отступы для кнопок на мобильных */
+
 @media (max-width: 400px) {
   .d-flex.justify-space-between {
     flex-direction: column;
