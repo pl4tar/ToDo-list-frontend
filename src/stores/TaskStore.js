@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { db } from '@/firebase/firebaseConfig.js'
-import { collection, addDoc, serverTimestamp,deleteDoc,doc } from 'firebase/firestore'
+import { collection, addDoc, serverTimestamp,deleteDoc,doc, updateDoc } from 'firebase/firestore'
 import { useAuthStore } from '@/stores/firebase/AuthStore'
 import { useTaskConfigStore } from '@/stores/TaskConfigStore'
 
@@ -76,13 +76,24 @@ export const useTaskStore = defineStore('task', () => {
     isDialogShown.value = false
   }
 
+  const completeTask = async (taskId) => {
+    try {
+      await updateDoc(doc(db, 'tasks', taskId), {
+        completed: true,
+        completedAt: new Date()
+      });
+    } catch (error) {
+      console.error('Ошибка при завершении задачи:', error);
+      throw error;
+    }
+  };
+
   const deleteTask = async (taskId) => {
     try {
       await deleteDoc(doc(db, 'tasks', taskId));
-      return true; // Успешное удаление
     } catch (error) {
       console.error('Ошибка при удалении задачи:', error);
-      throw error; // Пробрасываем ошибку для обработки в компоненте
+      throw error;
     }
   };
 
@@ -104,5 +115,6 @@ export const useTaskStore = defineStore('task', () => {
     openDialogDate,
     closeDialogDate,
     deleteTask,
+    completeTask,
   }
 })
