@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { db } from '@/firebase/firebaseConfig.js'
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
+import { collection, addDoc, serverTimestamp,deleteDoc,doc } from 'firebase/firestore'
 import { useAuthStore } from '@/stores/firebase/AuthStore'
 import { useTaskConfigStore } from '@/stores/TaskConfigStore'
 
@@ -76,6 +76,16 @@ export const useTaskStore = defineStore('task', () => {
     isDialogShown.value = false
   }
 
+  const deleteTask = async (taskId) => {
+    try {
+      await deleteDoc(doc(db, 'tasks', taskId));
+      return true; // Успешное удаление
+    } catch (error) {
+      console.error('Ошибка при удалении задачи:', error);
+      throw error; // Пробрасываем ошибку для обработки в компоненте
+    }
+  };
+
   return {
     isDialogShown,
     titleTask,
@@ -92,6 +102,7 @@ export const useTaskStore = defineStore('task', () => {
     resetForm,
     closeDialog,
     openDialogDate,
-    closeDialogDate
+    closeDialogDate,
+    deleteTask,
   }
 })

@@ -7,17 +7,19 @@
     />
     <DeleteConfirmationDialog
       v-model="isDialogForDeletionOpen"
+      :task-id="task.id"
       @confirm="deleteTask"
     />
     <TaskDetailsDialog
       v-model="isDialogDetailsOpen"
-      :task="task" />
+      :task="task"
+    />
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
-import { useTaskStore } from '@/stores/TaskStore.js';
+import { useTaskStore } from '@/stores/TaskStore';
 import TaskCard from '@/components/task/TaskCard.vue';
 import DeleteConfirmationDialog from '@/components/task/DeleteConfirmationDialog.vue';
 import TaskDetailsDialog from '@/components/task/TaskDetailsDialog.vue';
@@ -30,19 +32,22 @@ const props = defineProps({
 });
 
 const TaskStore = useTaskStore();
-
 const isDialogDetailsOpen = ref(false);
-
 const isDialogForDeletionOpen = ref(false);
+const isDeleting = ref(false);
 
-const isConfirmForDeletion = ref(false);
-
-function deleteTask() {
-  // isConfirmForDeletion.value = true
-  TaskStore.deleteTask(props.task.id);
-  isConfirmForDeletion.value = false;
-  // isDialogForDeletionOpen.value = false
-}
+const deleteTask = async () => {
+  isDeleting.value = true;
+  try {
+    await TaskStore.deleteTask(props.task.id);
+    // Диалог закроется автоматически через v-model
+  } catch (error) {
+    console.error('Ошибка при удалении задачи:', error);
+    // Можно показать пользователю сообщение об ошибке
+  } finally {
+    isDeleting.value = false;
+  }
+};
 </script>
 
 <style scoped>
