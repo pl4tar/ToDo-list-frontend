@@ -33,6 +33,7 @@
               color="primary" />
           </template>
         </v-text-field>
+
         <v-textarea
           label="Описание"
           clearable
@@ -55,6 +56,7 @@
             </span>
           </template>
         </v-switch>
+
         <v-select
           class="mb-2"
           label="Категория"
@@ -62,6 +64,7 @@
           :items="filteredCategories"
           v-model="TaskStore.selectedCategory"
         />
+
         <div class="d-flex flex-column ga-1 mb-5 align-center">
           <p class="text-primary font-weight-bold">Укажите приоритет</p>
           <v-chip-group
@@ -84,17 +87,17 @@
             </v-chip>
           </v-chip-group>
         </div>
+
         <v-sheet
-          class="mx-6 pa-4 mb-5 bg-background-dark rounded-lg elevation-5 text-center"
+          class="date-block mx-auto pa-4 mb-5 bg-background-dark rounded-lg elevation-5 text-center"
         >
           <p class="text-primary font-weight-bold mb-3">
-            Укажите дату выполнения задачи или добавьте дедлайн, выбрав дату
-            окончания
+            Укажите дату выполнения задачи
           </p>
-          <div class="d-flex flex-column align-center justify-center">
-            <div class="d-flex flex-column flex-md-row justify-center ga-3 mb-3">
+          <div class="date-content">
+            <div class="date-buttons">
               <v-btn
-                class="align-self-center rounded-xl w-75 px-8"
+                class="date-btn"
                 color="green"
                 prepend-icon="mdi-calendar"
                 text="Начало"
@@ -103,7 +106,7 @@
                 @click="TaskStore.openDialogDate('start')"
               />
               <v-btn
-                class="align-self-center rounded-xl w-75"
+                class="date-btn"
                 color="primary"
                 prepend-icon="mdi-calendar"
                 text="Конец"
@@ -112,16 +115,16 @@
                 @click="TaskStore.openDialogDate('end')"
               />
             </div>
-            <div
-              class="d-flex flex-column flex-md-row justify-center ga-1 align-center mb-3"
-            >
+            <div class="date-chips">
               <v-chip
                 v-if="TaskStore.startDate"
-                class="elevation-4 bg-green text-center"
+                class="elevation-4 bg-green"
               >
                 {{ formatDate(TaskStore.startDate) }}
               </v-chip>
-              <span v-if="TaskStore.startDate && TaskStore.endDate">-</span>
+              <span
+                v-if="TaskStore.startDate && TaskStore.endDate"
+                class="mx-2">-</span>
               <v-chip
                 v-if="TaskStore.endDate"
                 class="elevation-4 bg-primary">
@@ -134,6 +137,7 @@
             />
           </div>
         </v-sheet>
+
         <div
           class="d-flex flex-column ga-5 justify-center align-center dialog_btn_wrapper"
         >
@@ -223,15 +227,68 @@ const addTask = async () => {
   margin: 0 auto;
 }
 
-@media (min-width: 1800px) {
+.date-block {
+  width: calc(100% - 32px);
+  max-width: 100%;
+}
+
+.date-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.date-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.date-btn {
+  min-width: 120px;
+  flex: 1 1 calc(50% - 12px);
+  max-width: 200px;
+}
+
+.date-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+@media (max-width: 960px) {
   .addDialog {
-    width: 50%;
+    width: 75%;
+  }
+}
+
+@media (max-width: 768px) {
+  .addDialog {
+    width: 85%;
+  }
+
+  .date-btn {
+    flex: 1 1 100%;
+    max-width: none;
   }
 }
 
 @media (max-width: 500px) {
   .addDialog {
-    width: 100%;
+    width: 95%;
+    padding: 12px;
+  }
+
+  .date-block {
+    width: calc(100% - 16px);
+    padding: 12px;
   }
 }
 </style>

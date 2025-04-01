@@ -4,6 +4,7 @@
     transition="dialog-top-transition"
     v-model="isDialogShown"
     max-width="800"
+    content-class="dialog-fix"
   >
     <v-card class="pa-4 pb-10 rounded-lg editDialog bg-background-light">
       <v-form ref="taskForm">
@@ -45,12 +46,13 @@
         </v-switch>
 
         <v-select
-          class="mb-2"
+          class="mb-2 select-fix"
           label="Категория"
           chips
           :items="filteredCategories"
           v-model="formData.category"
           @update:modelValue="checkChanges"
+          :menu-props="{ contentClass: 'select-menu-fix' }"
         />
 
         <div class="d-flex flex-column ga-1 mb-5 align-center">
@@ -78,15 +80,15 @@
         </div>
 
         <v-sheet
-          class="mx-6 pa-4 mb-5 bg-background-dark rounded-lg elevation-5 text-center"
+          class="date-section mx-auto pa-4 mb-5 bg-background-dark rounded-lg elevation-5 text-center"
         >
           <p class="text-primary font-weight-bold mb-3">
             Даты выполнения
           </p>
-          <div class="d-flex flex-column align-center justify-center">
-            <div class="d-flex flex-column flex-md-row justify-center ga-3 mb-3">
+          <div class="date-content">
+            <div class="date-buttons">
               <v-btn
-                class="align-self-center rounded-xl w-75 px-8"
+                class="date-btn"
                 color="green"
                 prepend-icon="mdi-calendar"
                 text="Начало"
@@ -95,7 +97,7 @@
                 @click="openDateDialog('start')"
               />
               <v-btn
-                class="align-self-center rounded-xl w-75"
+                class="date-btn"
                 color="primary"
                 prepend-icon="mdi-calendar"
                 text="Конец"
@@ -104,16 +106,16 @@
                 @click="openDateDialog('end')"
               />
             </div>
-            <div
-              class="d-flex flex-column flex-md-row justify-center ga-1 align-center mb-3"
-            >
+            <div class="date-chips">
               <v-chip
                 v-if="formData.startDate"
-                class="elevation-4 bg-green text-center"
+                class="elevation-4 bg-green"
               >
                 {{ formatDisplayDate(formData.startDate) }}
               </v-chip>
-              <span v-if="formData.startDate && formData.endDate">-</span>
+              <span
+                v-if="formData.startDate && formData.endDate"
+                class="mx-2">-</span>
               <v-chip
                 v-if="formData.endDate"
                 class="elevation-4 bg-primary">
@@ -123,7 +125,9 @@
             <v-dialog
               v-model="isDatePickerOpen"
               max-width="400"
-              persistent>
+              persistent
+              content-class="datepicker-dialog"
+            >
               <v-card class="pa-4 bg-background-dark rounded-lg">
                 <v-date-picker
                   v-model="currentDate"
@@ -159,20 +163,19 @@
             </v-dialog>
           </div>
         </v-sheet>
-        <div
-          class="d-flex flex-column ga-5 justify-center align-center dialog_btn_wrapper"
-        >
+
+        <div class="dialog-btn-wrapper">
           <v-btn
             color="primary"
             text="Закрыть"
-            class="elevation-5 w-50"
+            class="dialog-btn"
             variant="tonal"
             @click="closeDialog"
           />
           <v-btn
             color="primary"
             text="Сохранить"
-            class="elevation-5 w-50"
+            class="dialog-btn"
             :loading="isLoading"
             :disabled="!hasChanges || formData.title.length < 3"
             @click="handleSubmit"
@@ -206,11 +209,13 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue', 'updated']);
 
+// Инициализация хранилищ
 const TaskConfigStore = useTaskConfigStore();
 const MenuStore = useMenuStore();
 const TaskStore = useTaskStore();
 const WarningStore = useWarningStore();
 
+// Состояние компонента
 const isLoading = ref(false);
 const hasChanges = ref(false);
 const selectedPriorityIndex = ref(0);
@@ -219,6 +224,7 @@ const isDatePickerOpen = ref(false);
 const currentDate = ref(new Date());
 const selectedDateType = ref('');
 
+// Данные формы
 const formData = ref({
   title: '',
   description: '',
@@ -230,6 +236,7 @@ const formData = ref({
 
 const initialData = ref({});
 
+// Правила валидации
 const titleRules = [
   v => (v && v.length >= 3) || 'Минимум 3 символа'
 ];
@@ -240,12 +247,14 @@ const filteredCategories = computed(() =>
     ),
 );
 
+// Форматирование даты для отображения
 const formatDisplayDate = (date) => {
   if (!date) {return '';}
   const d = new Date(date);
   return isNaN(d.getTime()) ? 'Некорректная дата' : d.toLocaleDateString('ru-RU');
 };
 
+// Преобразование дат из Firestore
 const parseFirestoreDate = (date) => {
   if (!date) {return null;}
   if (date instanceof Timestamp) {
@@ -257,12 +266,14 @@ const parseFirestoreDate = (date) => {
   return new Date(date);
 };
 
+// Проверка и форматирование даты для Firestore
 const prepareDateForFirestore = (date) => {
   if (!date) {return null;}
   const d = new Date(date);
   return isNaN(d.getTime()) ? null : d;
 };
 
+// Управление видимостью диалога
 const isDialogShown = computed({
   get() {
     return props.modelValue;
@@ -271,6 +282,8 @@ const isDialogShown = computed({
     emit('update:modelValue', value);
   }
 });
+
+// Инициализация формы при открытии
 watch(() => props.modelValue, (newVal) => {
   if (newVal && props.task) {
     formData.value = {
@@ -294,6 +307,7 @@ watch(() => props.modelValue, (newVal) => {
   }
 });
 
+// Методы для работы с календарем
 const openDateDialog = (type) => {
   selectedDateType.value = type;
   currentDate.value = type === 'start'
@@ -322,16 +336,19 @@ const closeDatePicker = () => {
   isDatePickerOpen.value = false;
 };
 
+// Проверка изменений
 const checkChanges = () => {
   const formChanged = JSON.stringify(formData.value) !== JSON.stringify(initialData.value);
   const priorityChanged = selectedPriorityIndex.value !== initialPriorityIndex.value;
   hasChanges.value = formChanged || priorityChanged;
 };
 
+// Закрытие диалога
 const closeDialog = () => {
   isDialogShown.value = false;
 };
 
+// Сохранение задачи
 const handleSubmit = async () => {
   if (!hasChanges.value || formData.value.title.length < 3) {return;}
 
@@ -351,6 +368,7 @@ const handleSubmit = async () => {
       updatedAt: Timestamp.now()
     };
 
+    // Обработка даты начала
     const startDate = prepareDateForFirestore(formData.value.startDate);
     if (startDate) {
       updatedData.startDate = Timestamp.fromDate(startDate);
@@ -358,6 +376,7 @@ const handleSubmit = async () => {
       updatedData.startDate = null;
     }
 
+    // Обработка даты окончания
     const endDate = prepareDateForFirestore(formData.value.endDate);
     if (endDate) {
       updatedData.endDate = Timestamp.fromDate(endDate);
@@ -383,20 +402,92 @@ const handleSubmit = async () => {
   margin: 0 auto;
 }
 
-@media (min-width: 1800px) {
+.select-fix {
+  position: relative;
+  z-index: 1001;
+}
+
+.date-section {
+  width: calc(100% - 32px);
+  max-width: 100%;
+}
+
+.date-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.date-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.date-btn {
+  min-width: 120px;
+  flex: 1 1 calc(50% - 12px);
+  max-width: 200px;
+  border-radius: 16px;
+  padding: 0 16px;
+}
+
+.date-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+.dialog-btn-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  margin-top: 20px;
+  align-items: center;
+}
+
+.dialog-btn {
+  width: 100%;
+  max-width: 300px;
+}
+@media (max-width: 960px) {
   .editDialog {
-    width: 50%;
+    width: 75%;
+  }
+}
+
+@media (max-width: 768px) {
+  .editDialog {
+    width: 85%;
+  }
+
+  .date-btn {
+    flex: 1 1 100%;
+    max-width: none;
   }
 }
 
 @media (max-width: 500px) {
   .editDialog {
-    width: 100%;
+    width: 95%;
+    padding: 12px;
+  }
+
+  .date-section {
+    width: calc(100% - 16px);
+    padding: 12px;
+  }
+
+  .dialog-btn {
+    padding: 0 12px;
   }
 }
-
-.dialog_btn_wrapper {
-  margin-top: 20px;
-}
-
 </style>
