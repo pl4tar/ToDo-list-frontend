@@ -209,13 +209,11 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue', 'updated']);
 
-// Инициализация хранилищ
 const TaskConfigStore = useTaskConfigStore();
 const MenuStore = useMenuStore();
 const TaskStore = useTaskStore();
 const WarningStore = useWarningStore();
 
-// Состояние компонента
 const isLoading = ref(false);
 const hasChanges = ref(false);
 const selectedPriorityIndex = ref(0);
@@ -224,7 +222,6 @@ const isDatePickerOpen = ref(false);
 const currentDate = ref(new Date());
 const selectedDateType = ref('');
 
-// Данные формы
 const formData = ref({
   title: '',
   description: '',
@@ -236,7 +233,6 @@ const formData = ref({
 
 const initialData = ref({});
 
-// Правила валидации
 const titleRules = [
   v => (v && v.length >= 3) || 'Минимум 3 символа'
 ];
@@ -247,14 +243,12 @@ const filteredCategories = computed(() =>
     ),
 );
 
-// Форматирование даты для отображения
 const formatDisplayDate = (date) => {
   if (!date) {return '';}
   const d = new Date(date);
   return isNaN(d.getTime()) ? 'Некорректная дата' : d.toLocaleDateString('ru-RU');
 };
 
-// Преобразование дат из Firestore
 const parseFirestoreDate = (date) => {
   if (!date) {return null;}
   if (date instanceof Timestamp) {
@@ -266,14 +260,12 @@ const parseFirestoreDate = (date) => {
   return new Date(date);
 };
 
-// Проверка и форматирование даты для Firestore
 const prepareDateForFirestore = (date) => {
   if (!date) {return null;}
   const d = new Date(date);
   return isNaN(d.getTime()) ? null : d;
 };
 
-// Управление видимостью диалога
 const isDialogShown = computed({
   get() {
     return props.modelValue;
@@ -283,7 +275,6 @@ const isDialogShown = computed({
   }
 });
 
-// Инициализация формы при открытии
 watch(() => props.modelValue, (newVal) => {
   if (newVal && props.task) {
     formData.value = {
@@ -307,7 +298,6 @@ watch(() => props.modelValue, (newVal) => {
   }
 });
 
-// Методы для работы с календарем
 const openDateDialog = (type) => {
   selectedDateType.value = type;
   currentDate.value = type === 'start'
@@ -336,19 +326,16 @@ const closeDatePicker = () => {
   isDatePickerOpen.value = false;
 };
 
-// Проверка изменений
 const checkChanges = () => {
   const formChanged = JSON.stringify(formData.value) !== JSON.stringify(initialData.value);
   const priorityChanged = selectedPriorityIndex.value !== initialPriorityIndex.value;
   hasChanges.value = formChanged || priorityChanged;
 };
 
-// Закрытие диалога
 const closeDialog = () => {
   isDialogShown.value = false;
 };
 
-// Сохранение задачи
 const handleSubmit = async () => {
   if (!hasChanges.value || formData.value.title.length < 3) {return;}
 

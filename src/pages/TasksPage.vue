@@ -49,28 +49,6 @@
       class="mb-4"
     ></v-progress-linear>
 
-    <v-row>
-      <v-col
-        v-for="task in filteredTasks"
-        :key="task.id"
-        cols="12"
-        md="6"
-      >
-        <TaskItem :task="task" />
-      </v-col>
-
-      <v-col
-        v-if="!AllTasksStore.isLoading && !filteredTasks.length && route.params.filter !== 'expired'"
-        class="text-center text-h6 text-primary"
-      >
-        <p class="d-inline-block mr-2">Пока ничего нет</p>
-        <v-icon
-          icon="mdi-emoticon-cry-outline"
-          size="x-large" />
-        <p class="mt-3">Добавьте новую задачу!</p>
-      </v-col>
-    </v-row>
-
     <v-row v-if="route.params.filter === 'expired'">
       <v-col
         v-for="task in expiredTasks"
@@ -81,7 +59,7 @@
         <TaskItem :task="task" />
       </v-col>
       <v-col
-        v-if="!AllTasksStore.isLoading && !expiredTasks.length && route.params.filter === 'expired'"
+        v-if="!AllTasksStore.isLoading && !expiredTasks.length"
         class="text-h6 text-center text-primary"
       >
         <p class="d-inline-block mb-2">Вы ничего не просрочили!</p>
@@ -90,6 +68,27 @@
             icon="mdi-thumb-up"
             size="x-large" />
         </div>
+      </v-col>
+    </v-row>
+
+    <v-row v-else>
+      <v-col
+        v-for="task in filteredTasks"
+        :key="task.id"
+        cols="12"
+        md="6"
+      >
+        <TaskItem :task="task" />
+      </v-col>
+      <v-col
+        v-if="!AllTasksStore.isLoading && !filteredTasks.length"
+        class="text-center text-h6 text-primary"
+      >
+        <p class="d-inline-block mr-2">Пока ничего нет</p>
+        <v-icon
+          icon="mdi-emoticon-cry-outline"
+          size="x-large" />
+        <p class="mt-3">Добавьте новую задачу!</p>
       </v-col>
     </v-row>
   </div>
@@ -126,14 +125,12 @@ const pageTitle = computed(() => {
   return titles[route.params.filter] || 'Задачи'
 })
 
-
 const filters = {
   job: task => task.category === 'job',
   studies: task => task.category === 'studies',
   personal: task => task.category === 'personal',
   favorites: task => task.isTaskInFavorites,
-  expired: task => (task.endDate && new Date(task.endDate) < currentDate.value ||
-  (task.startDate && new Date(task.startDate) < currentDate.value)),
+  expired: task => task.endDate && new Date(task.endDate) < currentDate.value, // Исправлено!
   withoutCategory: task => !task.category,
 }
 
@@ -166,6 +163,7 @@ const filteredTasks = computed(() => {
     const searchText = desiredTask.value.toLowerCase()
     result = result.filter(task => task.title.toLowerCase().includes(searchText))
   }
+
   if (filtrationValue.value === 'priority') {
     result = [...result].sort(sortByPriority)
   } else if (filtrationValue.value === 'date') {
@@ -176,7 +174,7 @@ const filteredTasks = computed(() => {
 })
 
 const expiredTasks = computed(() => {
-  let result = AllTasksStore.tasks.filter(filters.expired)
+  let result = baseTasks.value.filter(filters.expired)
 
   if (desiredTask.value) {
     const searchText = desiredTask.value.toLowerCase()
@@ -194,7 +192,9 @@ const expiredTasks = computed(() => {
 
 onMounted(() => {
   const unsubscribe = AllTasksStore.subscribeToTasks()
-  const interval = setInterval(() => currentDate.value = new Date(), 60000)
+  const interval = setInterval(() => {
+    currentDate.value = new Date()
+  }, 60000)
 
   onUnmounted(() => {
     unsubscribe?.()

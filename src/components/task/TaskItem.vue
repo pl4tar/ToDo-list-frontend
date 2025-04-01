@@ -61,7 +61,7 @@ const isDialogDetailsOpen = ref(false);
 const isDialogForDeletionOpen = ref(false);
 const isDialogForCompletionOpen = ref(false);
 const isEditDialogOpen = ref(false);
-
+const overdueTasks = allTasksStore.overdueTasks
 
 const handleTaskUpdated = () => {
 };

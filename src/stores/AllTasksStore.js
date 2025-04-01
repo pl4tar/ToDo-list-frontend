@@ -14,12 +14,10 @@ export const useAllTasksStore = defineStore('allTasksStore', () => {
       isLoading.value = false
       return
     }
-
     const q = query(
         collection(db, 'tasks'),
         where('userId', '==', authStore.user.uid)
     )
-
     return onSnapshot(q, (querySnapshot) => {
       tasks.value = querySnapshot.docs.map(doc => {
         const data = doc.data()
