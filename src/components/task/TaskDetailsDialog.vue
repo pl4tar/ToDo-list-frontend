@@ -38,20 +38,17 @@
             <v-divider class="mb-4" />
             <div>
               <p class="mb-1">Избранное</p>
-              <v-btn
-                variant="flat"
-                size="small"
-                class="bg-primary rounded-xl text-body-1 elevation-5"
-                :text="task.isTaskInFavorites ? 'Удалить' : 'Добавить'"
+              <v-chip
+                class="elevation-1 mb-2"
+                variant="elevated"
+                :color="task.isTaskInFavorites ? 'yellow-darken-3' : 'grey-lighten-2'"
               >
-                <template v-slot:prepend>
-                  <v-icon
-                    :icon="
-                      task.isTaskInFavorites ? 'mdi-close-thick' : 'mdi-plus'
-                    "
-                  />
-                </template>
-              </v-btn>
+                <v-icon
+                  :icon="task.isTaskInFavorites ? 'mdi-star' : 'mdi-star-outline'"
+                  class="mr-1"
+                />
+                {{ task.isTaskInFavorites ? "В избранном" : "Не в избранном" }}
+              </v-chip>
             </div>
           </div>
         </v-sheet>
@@ -61,8 +58,8 @@
 </template>
 
 <script setup>
-import { useMenuStore } from '@/stores/MenuStore';
-import { useTaskConfigStore } from '@/stores/TaskConfigStore';
+import {useMenuStore} from '@/stores/MenuStore';
+import {useTaskConfigStore} from '@/stores/TaskConfigStore';
 
 defineProps({
   task: {
@@ -76,14 +73,14 @@ const TaskConfigStore = useTaskConfigStore();
 
 function getCategoryData(categoryTask, parameter) {
   const category = MenuStore.categories.find(
-    (category) => categoryTask === category.value,
+      (category) => categoryTask === category.value,
   );
   return category ? category[parameter] : null;
 }
 
 function getPriorityColor(priorityTask, parameter) {
   const priority = TaskConfigStore.priorities.find(
-    (priority) => priorityTask === priority.value,
+      (priority) => priorityTask === priority.value,
   );
   return priority ? priority[parameter] : null;
 }

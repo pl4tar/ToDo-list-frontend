@@ -4,18 +4,18 @@
       <div>
         <h1
           class="mb-3"
-          style="line-height: 1.2"
-        >
+          style="line-height: 1.2">
           {{ pageTitle }}
         </h1>
         <div class="d-flex ga-2 mb-3 text-secondary justify-center justify-sm-start">
           <v-icon icon="mdi-check-circle-outline" />
-          <p>Всего <span>100</span> задач</p>
+          <p>Всего <span>{{ AllTasksStore.tasks.length }}</span> задач</p>
         </div>
       </div>
       <AddTaskDialog />
       <v-divider />
     </div>
+
     <v-responsive class="mx-auto mt-4 mb-7">
       <v-text-field
         v-model="desiredTask"
@@ -41,9 +41,17 @@
         />
       </div>
     </v-responsive>
-    <v-row>
+
+    <v-progress-linear
+      v-if="AllTasksStore.isLoading"
+      indeterminate
+      color="primary"
+      class="mb-4"
+    ></v-progress-linear>
+
+    <v-row v-if="route.params.filter === 'expired'">
       <v-col
-        v-for="task in tasks"
+        v-for="task in expiredTasks"
         :key="task.id"
         cols="12"
         md="6"
@@ -51,27 +59,7 @@
         <TaskItem :task="task" />
       </v-col>
       <v-col
-        v-if="!tasks.length && route.params.filter !== 'expired'"
-        class="text-center text-h6 text-primary"
-      >
-        <p class="d-inline-block mr-2">Пока ничего нет</p>
-        <v-icon
-          icon="mdi-emoticon-cry-outline"
-          size="x-large" 
-        />
-        <p class="mt-3">Добавьте новую задачу!</p>
-      </v-col>
-    </v-row>
-    <v-row v-if="route.params.filter === 'expired'">
-      <v-col
-        v-for="task in expiredTasks"
-        :key="task.id"
-        cols="12"
-        md="6">
-        <TaskItem :task="task" />
-      </v-col>
-      <v-col
-        v-if="!expiredTasks.length && route.params.filter === 'expired'"
+        v-if="!AllTasksStore.isLoading && !expiredTasks.length"
         class="text-h6 text-center text-primary"
       >
         <p class="d-inline-block mb-2">Вы ничего не просрочили!</p>
@@ -82,19 +70,47 @@
         </div>
       </v-col>
     </v-row>
+
+    <v-row v-else>
+      <v-col
+        v-for="task in filteredTasks"
+        :key="task.id"
+        cols="12"
+        md="6"
+      >
+        <TaskItem :task="task" />
+      </v-col>
+      <v-col
+        v-if="!AllTasksStore.isLoading && !filteredTasks.length"
+        class="text-center text-h6 text-primary"
+      >
+        <p class="d-inline-block mr-2">Пока ничего нет</p>
+        <v-icon
+          icon="mdi-emoticon-cry-outline"
+          size="x-large" />
+        <p class="mt-3">Добавьте новую задачу!</p>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue';
-import { useRoute } from 'vue-router';
-import TaskItem from '@/components/task/TaskItem.vue';
-import AddTaskDialog from '@/components/task/AddTaskDialog.vue';
-import { useAllTasksStore } from '@/stores/AllTasksStore';
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { useRoute } from 'vue-router'
+import TaskItem from '@/components/task/TaskItem.vue'
+import AddTaskDialog from '@/components/task/AddTaskDialog.vue'
+import { useAllTasksStore } from '@/stores/AllTasksStore'
 
-const route = useRoute();
+const route = useRoute()
+const AllTasksStore = useAllTasksStore()
+const currentDate = ref(new Date())
+const desiredTask = ref('')
+const filtrationValue = ref('')
 
-const AllTasksStore = useAllTasksStore();
+const filtrationValues = [
+  { title: 'Приоритету', value: 'priority' },
+  { title: 'Дате', value: 'date' }
+]
 
 const pageTitle = computed(() => {
   const titles = {
@@ -105,143 +121,84 @@ const pageTitle = computed(() => {
     studies: 'Задачи по учебе',
     personal: 'Личные задачи',
     withoutCategory: 'Задачи без категории',
-  };
-  return titles[route.params.filter] || 'Задачи';
-});
-
-// искомая задача
-const desiredTask = ref();
-
-const filtrationValue = ref();
-const filtrationValues = ref([
-  {
-    title: 'Приоритету',
-    value: 'priority',
-  },
-  {
-    title: 'Дате',
-    value: 'date',
-  },
-]);
+  }
+  return titles[route.params.filter] || 'Задачи'
+})
 
 const filters = {
-  job: (task) => task.category === 'job',
-  studies: (task) => task.category === 'studies',
-  personal: (task) => task.category === 'personal',
-  favorites: (task) => task.isTaskInFavorites,
-  expired: (task) => task?.endDate < new Date() || task?.startDate < new Date(),
-  withoutCategory: (task) => !task.category,
-};
+  job: task => task.category === 'job',
+  studies: task => task.category === 'studies',
+  personal: task => task.category === 'personal',
+  favorites: task => task.isTaskInFavorites,
+  expired: task => task.endDate && new Date(task.endDate) < currentDate.value, // Исправлено!
+  withoutCategory: task => !task.category,
+}
 
-// функции сортировки
 const sortByPriority = (a, b) => {
-  const priorityOrder = { height: 3, medium: 2, low: 1, undefined: 0 };
-  const priorityA = a.priority || 'undefined';
-  const priorityB = b.priority || 'undefined';
-  return priorityOrder[priorityB] - priorityOrder[priorityA];
-};
+  const priorityOrder = { height: 3, medium: 2, low: 1, undefined: 0 }
+  return (priorityOrder[b.priority] || 0) - (priorityOrder[a.priority] || 0)
+}
 
 const sortByDate = (a, b) => {
-  const dateA = a.endDate || a.startDate;
-  const dateB = b.endDate || b.startDate;
+  const dateA = a.endDate || a.startDate
+  const dateB = b.endDate || b.startDate
+  if (!dateA && !dateB) {return 0}
+  if (!dateA) {return 1}
+  if (!dateB) {return -1}
+  return new Date(dateA) - new Date(dateB)
+}
 
-  if (!dateA && !dateB) {
-    return 0;
-  }
-  if (!dateA) {
-    return 1;
-  }
-  if (!dateB) {
-    return -1;
-  }
-  return new Date(dateA) - new Date(dateB);
-};
+const baseTasks = computed(() => {
+  return AllTasksStore.tasks.filter(task => !task.isTaskCompleted)
+})
 
-const currentDate = ref(new Date());
+const filteredTasks = computed(() => {
+  let result = baseTasks.value
 
-// просроченные задачи
+  if (route.params.filter && filters[route.params.filter]) {
+    result = result.filter(filters[route.params.filter])
+  }
+
+  if (desiredTask.value) {
+    const searchText = desiredTask.value.toLowerCase()
+    result = result.filter(task => task.title.toLowerCase().includes(searchText))
+  }
+
+  if (filtrationValue.value === 'priority') {
+    result = [...result].sort(sortByPriority)
+  } else if (filtrationValue.value === 'date') {
+    result = [...result].sort(sortByDate)
+  }
+
+  return result
+})
+
 const expiredTasks = computed(() => {
-  let tasks = AllTasksStore.temporaryTasks.filter((task) => {
-    const now = new Date();
+  let result = baseTasks.value.filter(filters.expired)
 
-    // просроченные задачи (но не выполненные)
-    if (task.isTaskCompleted) {
-      return false;
-    }
-    if (task.endDate && new Date(task.endDate) < now) {
-      return true;
-    }
-    if (!task.endDate && task.startDate && new Date(task.startDate) < now) {
-      return true;
-    }
-
-    return false;
-  });
-
-  // поиск по названию
   if (desiredTask.value) {
-    const searchText = desiredTask.value.toLowerCase();
-    tasks = tasks.filter((task) =>
-      task.title.toLowerCase().includes(searchText),
-    );
+    const searchText = desiredTask.value.toLowerCase()
+    result = result.filter(task => task.title.toLowerCase().includes(searchText))
   }
 
-  // копирование массивв перед сортировкой
   if (filtrationValue.value === 'priority') {
-    return [...tasks].sort(sortByPriority);
+    result = [...result].sort(sortByPriority)
   } else if (filtrationValue.value === 'date') {
-    return [...tasks].sort(sortByDate);
+    result = [...result].sort(sortByDate)
   }
 
-  return tasks;
-});
-
-const tasks = computed(() => {
-  let filteredTasks = AllTasksStore.temporaryTasks.filter((task) => {
-    const now = new Date();
-
-    // если у задачи есть endDate (дедлайн) и он уже прошел, то исключаем
-    if (task.endDate && new Date(task.endDate) < now) {
-      return false;
-    }
-
-    // если у задачи есть только startDate и она уже прошла тоже исключаем
-    if (!task.endDate && task.startDate && new Date(task.startDate) < now) {
-      return false;
-    }
-
-    return true;
-  });
-
-  // фильтрация по категориям
-  if (filters[route.params.filter]) {
-    filteredTasks = filteredTasks.filter(filters[route.params.filter]);
-  }
-
-  // поиск по названию
-  if (desiredTask.value) {
-    const searchText = desiredTask.value.toLowerCase();
-    filteredTasks = filteredTasks.filter((task) =>
-      task.title.toLowerCase().includes(searchText),
-    );
-  }
-
-  // сортировка по приоритету или дате
-  if (filtrationValue.value === 'priority') {
-    filteredTasks.sort(sortByPriority);
-  } else if (filtrationValue.value === 'date') {
-    filteredTasks.sort(sortByDate);
-  }
-
-  return filteredTasks;
-});
+  return result
+})
 
 onMounted(() => {
-  // обновление текущей даты раз в минуту
+  const unsubscribe = AllTasksStore.subscribeToTasks()
   const interval = setInterval(() => {
-    currentDate.value = new Date();
-  }, 60000);
+    currentDate.value = new Date()
+  }, 60000)
 
-  onUnmounted(() => clearInterval(interval));
-});
+  onUnmounted(() => {
+    unsubscribe?.()
+    clearInterval(interval)
+  })
+})
 </script>

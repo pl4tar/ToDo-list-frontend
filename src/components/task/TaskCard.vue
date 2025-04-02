@@ -1,9 +1,9 @@
 <template>
   <v-card
-    class="w-100 bg-background-light rounded-lg elevation-10 pr-3"
+    class="w-100 bg-background-light rounded-lg elevation-10"
     @click="$emit('open-details')"
   >
-    <v-card-title class="flex-center">
+    <v-card-title class="flex-center text-wrap">
       {{ task.title }}
     </v-card-title>
 
@@ -31,5 +31,5 @@ defineProps({
   },
 });
 
-defineEmits(['open-details', 'delete-click', 'complete-click']);
+defineEmits(['open-details', 'delete-click', 'complete-click', 'edit-click']);
 </script>
